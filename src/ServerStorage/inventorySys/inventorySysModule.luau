@@ -1,0 +1,150 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerStorage= game:GetService("ServerStorage")
+local PlayersService = game:GetService("Players")
+local CollectionService = game:GetService("CollectionService")
+
+local inventorySystemEvents = ReplicatedStorage.inventorySystemEvents
+
+local ClientToServer = inventorySystemEvents.Drop
+local ServerToClient = inventorySystemEvents.ServerToClient
+local ServerToServer = inventorySystemEvents.ServerToServer
+
+local componentFolder = ServerStorage.inventorySys.Components
+local classComponents = {"eventManager", "gui"}
+
+
+local inventorySys = {}
+inventorySys.__index = inventorySys
+local invVersion = "1.1.2"
+
+inventorySys.instanceNumber = 0
+inventorySys.items = game.Workspace.Items:GetChildren()
+
+function inventorySys.new(player)
+	inventorySys.instanceNumber += 1 
+
+	local self = setmetatable({}, inventorySys)
+	self.instanceID = inventorySys.instanceNumber
+	self.player = player
+	self._topicEvent = Instance.new("BindableEvent")
+
+	self.Components = {}
+	self.Components.ClassComponents = {}	
+
+	self.currentItemEquipped = nil
+
+	return self
+end
+
+function inventorySys:m_Init()
+	warn("------")
+	warn("Inventory initiated, current version:" ,invVersion,"; instanceID:", self.instanceID,"; player:", self.player)
+	self:m_LoadComponents()
+	self:m_AddAll()
+	self:AdressEvents()
+end
+
+function inventorySys:AdressEvents()
+	self.clientDropped = ClientToServer.OnServerEvent:Connect(function(player)
+		if player == self.player and self.currentItemEquipped[1] then
+			self:m_Drop(self.currentItemEquipped[1])
+		end
+	end)
+	--	self.SlotClicked = self:m_SubscribeTopic("SlotClicked", function(player, slot, guiInstanceID)
+	--	if player == self.player then
+	--	local guiComponent = self.Components.ClassComponents.guiHandler
+	--	end
+	--	end)
+end
+
+function inventorySys:m_SetItem(player, item)
+	self.Picked = true
+	item.Parent = player.Backpack
+end
+
+function inventorySys:m_GetItem(item)
+	local itemInfo = {}
+	itemInfo.item = item
+
+	return itemInfo
+end
+
+function inventorySys:m_Drop(item)
+	local charCFrame = self.player.Character:FindFirstChild("HumanoidRootPart").CFrame
+	item.Parent = game.Workspace
+	item.Plane.CFrame = charCFrame * CFrame.new(0,2,-8) * CFrame.Angles(math.rad(180),0,0)
+
+	local itemComponent = self.currentItemEquipped[2]
+	itemComponent:PublishTopic("itemDropped", self.player, item)
+	itemComponent:RemoveFromItemsActive(self.player, item)
+end
+
+function inventorySys:m_LoadComponents()
+	for _, component in classComponents do
+
+		local classComponents = self.Components.ClassComponents
+
+		local compModule = require(componentFolder:FindFirstChild(component))
+		local newComp = compModule.new(self, self.player)
+		newComp:Init()
+
+		classComponents[newComp.name] = {}
+		classComponents[newComp.name] = newComp
+	end
+end
+
+function inventorySys:m_AddAll()
+	for _, instance in inventorySys.items do
+		if CollectionService:HasTag(instance, "item") then
+			self:m_AddComponents(instance)
+		end
+	end
+end
+
+function inventorySys:m_AddComponents(instance)
+	for _, tag in CollectionService:GetTags(instance) do
+		local component = componentFolder:FindFirstChild(tag)
+		if component then
+			self:m_CreateComponent(instance, component)
+		end
+	end	
+end
+
+function inventorySys:m_CreateComponent(instance, componentScript)
+	local compModule = require(componentScript)
+	local newComp = compModule.new(self, instance)
+	newComp:Init()
+
+	if self.Components[newComp.name] then
+		table.insert(self.Components[newComp.name], newComp.instanceID, newComp)
+	else
+		self.Components[newComp.name] = {}
+		table.insert(self.Components[newComp.name], newComp.instanceID, newComp)
+	end
+
+end
+
+function inventorySys:m_GetComponent(name, instanceID)
+	if self.Components[name] then
+		return self.Components[name][instanceID]
+	else
+		warn("Component not found")
+		return nil
+	end
+end
+
+function inventorySys:m_PublishTopic(topicName, player, ...)
+	self._topicEvent:Fire(topicName, player, ...)	
+	--print("Published topic: " .. topicName)
+end
+
+function inventorySys:m_SubscribeTopic(topicName, callBack)
+	local connection = self._topicEvent.Event:Connect(function(name, player, ...)
+		if name == topicName then
+			callBack(player, ...)
+		end
+	end)
+	return connection
+end
+
+return inventorySys
