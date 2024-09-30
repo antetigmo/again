@@ -11,7 +11,7 @@ local modVersion = "0.0.0"
 classManager.instanceNumber = 0
 
 function classManager.new(object, player, componentFolder, componentArray)
-	classManager.instanceNumber += 1
+	classManager.instanceNumber += 1	-- object main, player, componentFolder, specific array.
 	local self = setmetatable({}, classManager)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object

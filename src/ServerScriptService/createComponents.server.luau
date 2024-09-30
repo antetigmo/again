@@ -7,16 +7,18 @@ local componentsArray = {"EventManager"}						-- THIS SCRIPT, CREATE COMPONENTS 
 local componentFolder = ServerStorage.vehicleSys.Components
 local classComponentsFolder = ServerStorage.Components
 
-local componentsActive = {}
-componentsActive.name = "ServerComponents"
+local serverArray = {}
+serverArray.Components = {}
+
+serverArray.name = "ServerComponents"
 
 function LoadComponents() -- USED ONLY FOR THE CLASS
 	if not componentsArray then
-		return warn("There is no components to iterate, or it's a component class not a class one.")	
+		return warn("There is no components to iterate, no componentsArray.")	
 	end
 	for _, component in componentsArray do
 
-		local Components = componentsActive
+		local Components = serverArray.Components
 
 		local compModule = require(classComponentsFolder:FindFirstChild(component))
 		local newComp = compModule.new()
@@ -52,13 +54,13 @@ end
 
 function CreateComponent(instance, componentScript, ...)
 	local compModule = require(componentScript)
-	local newComp = compModule.new(componentsActive, "SERVER", instance)
+	local newComp = compModule.new(serverArray, "SERVER", instance)
 
-	if componentsActive[newComp.name] then
-		table.insert(componentsActive[newComp.name], newComp.instanceID, newComp)
+	if serverArray.Components[newComp.name] then
+		table.insert(serverArray.Components[newComp.name], newComp.instanceID, newComp)
 	else
-		componentsActive[newComp.name] = {}
-		table.insert(componentsActive[newComp.name], newComp.instanceID, newComp)
+		serverArray.Components[newComp.name] = {}
+		table.insert(serverArray.Components[newComp.name], newComp.instanceID, newComp)
 	end
 
 	newComp:Init()
@@ -67,8 +69,8 @@ function CreateComponent(instance, componentScript, ...)
 end
 
 function GetComponent(componentsArray, name, instanceID)
-	if componentsActive[name] then
-		return componentsActive[name][instanceID]
+	if serverArray.Components[name] then
+		return serverArray.Components[name][instanceID]
 	else
 		warn("Component not found")
 		return nil
@@ -81,6 +83,9 @@ function Init()
 
 	AddComponents(game.Workspace.SomeCar)
 	AddComponents(game.Workspace.SomeCar2)
+	AddComponents(game.Workspace.TestPart)
+
+	print(serverArray)
 end
 
 Init()
