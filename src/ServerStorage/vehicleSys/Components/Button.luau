@@ -30,6 +30,7 @@ function button:Init()
 	classManagerOBJ:Init()
 	-------------------------------------------
 
+    print(self)
 	print("Button initiated for class:", self.object.name)
     self:CreatePrompt(self.actualInstance)
     self:AddressEvents()

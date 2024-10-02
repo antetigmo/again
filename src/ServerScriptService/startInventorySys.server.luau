@@ -7,4 +7,3 @@ Players.PlayerAdded:Connect(function(player)
 	local inventoryObj = inventoryModule.new(player)
     inventoryObj:m_Init()
 end)
-
