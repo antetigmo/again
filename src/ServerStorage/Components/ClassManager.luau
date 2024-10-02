@@ -10,8 +10,8 @@ local modVersion = "0.0.0"
 
 classManager.instanceNumber = 0
 
-function classManager.new(object, player, componentFolder, componentArray)
-	classManager.instanceNumber += 1	-- object main, player, componentFolder, specific array.
+function classManager.new(object, player, componentFolder, componentArray)-- object main, player, componentFolder(location of the folder), specific array.
+	classManager.instanceNumber += 1	
 	local self = setmetatable({}, classManager)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
@@ -36,9 +36,9 @@ function classManager:Init()
 	self:LoadComponents()
 end
 
-function classManager:LoadComponents() -- USED ONLY FOR THE CLASS
+function classManager:LoadComponents() -- Load a component class
 	if not self.componentsArray then
-		return warn("There is no components to iterate, or it's a component class not a main class one.")	
+		return warn("There is no components to iterate")	
 	end
 	for _, component in self.componentsArray do
 
@@ -77,7 +77,7 @@ function classManager:AddComponents(instance)    -- ADD ALL COMPONENTS THAT THE 
 end
 
 function classManager:AddSpecificComponent(instance, component, componentArray)
-	if not componentArray then					 -- ADD ANY SPECIFIC COMPONENT, OR AN SPECIFIC ARRAY.
+	if not componentArray then					 -- ADD ANY SPECIFIC COMPONENT, OR AN SPECIFIC ARRAY, TO THE INSTANCE.
 		local actualComponent = self.componentFolder:FindFirstChild(component)
 		self:CreateComponent(instance, actualComponent)
 		return

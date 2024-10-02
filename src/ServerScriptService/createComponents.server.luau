@@ -3,7 +3,13 @@ local ServerStorage= game:GetService("ServerStorage")
 local PlayersService = game:GetService("Players")
 local CollectionService = game:GetService("CollectionService")
 
-local componentsArray = {"EventManager"}						-- THIS SCRIPT, CREATE COMPONENTS FOR THE SERVER
+----------
+local ClassManager = require(ServerStorage.Components.ClassManager)
+
+local componentFolder = ServerStorage.vehicleSys.Components
+local componentsArray = {"EventManager"}
+----------
+	                                  -- THIS SCRIPT, CREATE COMPONENTS FOR THE SERVER
 local componentFolder = ServerStorage.vehicleSys.Components
 local classComponentsFolder = ServerStorage.Components
 
@@ -79,7 +85,11 @@ end
 
 
 function Init()
-	warn("classManager initiated for [-SERVER-].")
+	--CUSTOMS SERVICES
+	local classManagerOBJ = ClassManager.new(serverArray, serverArray.name, componentFolder, componentsArray)
+	classManagerOBJ:Init()
+	-------------------------------------------
+	
 
 	AddComponents(game.Workspace.SomeCar)
 	AddComponents(game.Workspace.SomeCar2)

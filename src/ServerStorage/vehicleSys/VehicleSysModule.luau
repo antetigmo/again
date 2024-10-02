@@ -3,7 +3,7 @@ local ServerStorage= game:GetService("ServerStorage")
 local PlayersService = game:GetService("Players")
 local CollectionService = game:GetService("CollectionService")
 -----------------
-local ClassManager = require(ServerStorage.Components.ClassManager)
+local classManager = require(ServerStorage.Components.ClassManager)
 
 local componentFolder = ServerStorage.vehicleSys.Components
 local componentsArray = {"EventManager"}
@@ -29,7 +29,7 @@ end
 
 function vehicleSys:m_Init()
 	--CUSTOMS SERVICES
-	local classManagerOBJ = ClassManager.new(self, self.player, componentFolder, componentsArray)
+	local classManagerOBJ = classManager.new(self, self.player, componentFolder, componentsArray)
 	classManagerOBJ:Init()
 	-------------------------------------------
 	warn("------")

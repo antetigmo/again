@@ -8,7 +8,8 @@ local vehicle = {}
 vehicle.__index = vehicle
 vehicle.instanceNumber = 0
 
-vehicle.componentsArray = {"Engine", "Chassi","Direction", "Suspension"}
+vehicle.componentsArray = {"Engine", "Chassi", "Direction", "Suspension", "EnterVehicle"}
+vehicle.classComponents = {"EventManager"}
 
 function vehicle.new(object, player, ...)
 	vehicle.instanceNumber += 1
@@ -31,11 +32,13 @@ function vehicle:Init()
 	print("vehicle initiated for vehicle:", self.car.Name, "and for class:", self.object.name)
 	
 	--CUSTOMS SERVICES
-	local classManagerOBJ = ClassManager.new(self, self.player, componentFolder, nil)
+	local classManagerOBJ = ClassManager.new(self, self.player, componentFolder, vehicle.classComponents)
 	classManagerOBJ:Init()
 	-------------------------------------------
 
 	classManagerOBJ:AddSpecificComponent(self.car, nil, vehicle.componentsArray)
+	classManagerOBJ:AddSpecificComponent(self.car.Seat, "Button", nil)
+	classManagerOBJ:LoadComponents()
 end
 
 

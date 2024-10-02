@@ -19,6 +19,7 @@ function button.new(object, player, instance)        --- Creates a proximity pro
 	self.instanceID = button.instanceNumber
 	---------------------------------------------
 
+    self.EventManager = self.object.Components.eventManager
     self.actualInstance = instance
 	return self
 end
@@ -32,25 +33,18 @@ function button:Init()
 	print("Button initiated for class:", self.object.name)
     self:CreatePrompt(self.actualInstance)
     self:AddressEvents()
-    print(self.object)
 end
 
 function button:AddressEvents()
     self.Pressed = self.Prompt.Triggered:Connect(function(playerWhoTriggered)
         print("Prompt triggered.")
-        --self.object.EventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
+        self.EventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
     end)
 end
 
-function button:CreatePressedEvent()
-    local pressedEvent = 1
- 
-end
-
-
 function button:CreatePrompt(instance)
     local prompt = Instance.new("ProximityPrompt")
-    prompt.HoldDuration = 3
+    prompt.HoldDuration = 1
     prompt.Parent = instance
     --
     self.Prompt = prompt
