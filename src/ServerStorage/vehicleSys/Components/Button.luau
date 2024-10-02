@@ -15,8 +15,9 @@ function button.new(object, player, instance)        --- Creates a proximity pro
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "button"
+	self.name = "Button"
 	self.instanceID = button.instanceNumber
+    self.InitStatus = false
 	---------------------------------------------
 
     self.EventManager = self.object.Components.eventManager
@@ -26,19 +27,18 @@ end
 
 function button:Init()
     --CUSTOMS SERVICES
-	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, componentsArray)
+	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
-
-    print(self)
-	print("Button initiated for class:", self.object.name)
     self:CreatePrompt(self.actualInstance)
     self:AddressEvents()
+
+    self.InitStatus = true
 end
 
 function button:AddressEvents()
     self.Pressed = self.Prompt.Triggered:Connect(function(playerWhoTriggered)
-        print("Prompt triggered.")
+        print("Prompt triggered.", self)
         self.EventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
     end)
 end

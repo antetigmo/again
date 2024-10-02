@@ -10,7 +10,7 @@ function engine.new(object, player, ...)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "engine"
+	self.name = "Engine"
 	self.instanceID = engine.instanceNumber
 	---------------------------------------------
 	

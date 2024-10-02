@@ -8,7 +8,7 @@ function eventManager.new(object, player)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "eventManager"
+	self.name = "EventManager"
 	self.instanceID = eventManager.instanceNumber
 	---------------------------------------------
 	

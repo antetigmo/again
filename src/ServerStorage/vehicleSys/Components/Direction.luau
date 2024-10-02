@@ -19,7 +19,7 @@ function direction.new(object, player, ...)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "direction"
+	self.name = "Direction"
 	self.instanceID = direction.instanceNumber
 	---------------------------------------------
 	

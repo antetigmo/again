@@ -2,19 +2,16 @@ local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
 ---
 local vehicleSysModule = require(ServerStorage.vehicleSys.VehicleSysModule)
-local mainReferences = {}
+local mainsReferences = {}
 
 Players.PlayerAdded:Connect(function(player)
 
 	local vehicleSysModuleOBJ = vehicleSysModule.new(player)
+    vehicleSysModuleOBJ["mainsReference"] = mainsReferences.ServerClassManager
     vehicleSysModuleOBJ:m_Init()
     
-    mainReferences[vehicleSysModuleOBJ.player.Name] = vehicleSysModuleOBJ 
-    print(mainReferences)
+    mainsReferences[vehicleSysModuleOBJ.player.Name] = vehicleSysModuleOBJ 
 end)
-
-
-local classComponents = {"EventManager"}
 
 local ServerInstance = require(ServerStorage.Components.ServerInstance)
 local ClassManager = require(ServerStorage.Components.ClassManager)
@@ -22,9 +19,11 @@ local ClassManager = require(ServerStorage.Components.ClassManager)
 local serverInstanceOBJ = ServerInstance.new("serverInstance")
 serverInstanceOBJ:Init()
 
-local serverClassManager = ClassManager.new(serverInstanceOBJ, "ServerClassManager", ServerStorage.vehicleSys.Components, classComponents)
+local serverClassManager = ClassManager.new(serverInstanceOBJ, "ServerClassManager", ServerStorage.vehicleSys.Components, nil)
 serverClassManager:Init()
-mainReferences[serverClassManager.player] = serverClassManager
+
+serverInstanceOBJ["mainsReferences"] = mainsReferences
+mainsReferences[serverClassManager.player] = serverClassManager
 
 serverClassManager:AddComponents(game.Workspace.SomeCar)
 serverClassManager:AddComponents(game.Workspace.SomeCar2)

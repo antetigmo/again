@@ -10,7 +10,7 @@ function transmission.new(object, player, ...)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "transmission"
+	self.name = "Transmission"
 	self.instanceID = transmission.instanceNumber
 	---------------------------------------------
 

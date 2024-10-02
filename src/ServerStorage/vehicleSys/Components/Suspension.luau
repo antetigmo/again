@@ -12,7 +12,7 @@ function suspension.new(object, player, ...)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "suspension"
+	self.name = "Suspension"
 	self.instanceID = suspension.instanceNumber
 	---------------------------------------------
 	

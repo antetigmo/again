@@ -8,7 +8,7 @@ function chassi.new(object, player)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "chassi"
+	self.name = "Chassi"
 	self.instanceID = chassi.instanceNumber
 	---------------------------------------------
 

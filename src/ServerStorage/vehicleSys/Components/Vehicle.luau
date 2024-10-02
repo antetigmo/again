@@ -19,7 +19,7 @@ function vehicle.new(object, player, ...)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "vehicle"
+	self.name = "Vehicle"
 	self.instanceID = vehicle.instanceNumber
 	---------------------------------------------
 
@@ -32,13 +32,12 @@ function vehicle:Init()
 	print("vehicle initiated for vehicle:", self.car.Name, "and for class:", self.object.name)
 	
 	--CUSTOMS SERVICES
-	local classManagerOBJ = ClassManager.new(self, self.player, componentFolder, vehicle.classComponents)
+	local classManagerOBJ = ClassManager.new(self, self.player, componentFolder, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
 
 	classManagerOBJ:AddSpecificComponent(self.car, nil, vehicle.componentsArray)
 	classManagerOBJ:AddSpecificComponent(self.car.Seat, "Button", nil)
-	classManagerOBJ:LoadComponents()
 end
 
 

@@ -9,7 +9,7 @@ function serverInstance.new(player, ...)
 	
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.player = player
-	self.name = "serverinstance"
+	self.name = "ServerInstance"
 	self.instanceID = serverInstance.instanceNumber
 	---------------------------------------------
 	
@@ -18,6 +18,10 @@ end
 
 function serverInstance:Init()
 	print("ServerInstance initiated for the server as a singletonISH.")
+end
+
+function serverInstance:GetItself()
+	return self
 end
 
 return serverInstance

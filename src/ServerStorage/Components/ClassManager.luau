@@ -16,7 +16,7 @@ function classManager.new(object, player, componentFolder, componentArray)-- obj
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "classManager"
+	self.name = "ClassManager"
 	self.instanceID = classManager.instanceNumber
 	---------------------------------------------
 
@@ -33,23 +33,35 @@ end
 function classManager:Init()
 	warn("classManager initiated for class:", self.object.name)
 
-	self:LoadComponents()
+	self:LoadComponents({"EventManager", "LogManager"})
 end
 
-function classManager:LoadComponents() -- Load a component class
-	if not self.componentsArray then
-		return warn("There is no components to iterate")	
+function classManager:LoadComponents(specificComponent) -- Load a component class
+	if self.componentsArray then -- componentsArray is an array that you specify, to load all the components in that array.
+		for _, component in self.componentsArray do
+
+			local Components = self.object.Components
+	
+			local compModule = require(self.classComponentsFolder:FindFirstChild(component))
+			local newComp = compModule.new(self.object, self.player)
+			newComp:Init()
+	
+			Components[newComp.name] = {}
+			Components[newComp.name] = newComp
+		end
 	end
-	for _, component in self.componentsArray do
+	
+	if specificComponent then
+		for _, component in specificComponent do
+			local Components = self.object.Components
 
-		local Components = self.object.Components
+			local compModule = require(self.classComponentsFolder:FindFirstChild(component))
+			local newComp = compModule.new(self.object, self.player)
+			newComp:Init()
 
-		local compModule = require(self.classComponentsFolder:FindFirstChild(component))
-		local newComp = compModule.new(self.object, self.player)
-		newComp:Init()
-
-		Components[newComp.name] = {}
-		Components[newComp.name] = newComp
+			Components[newComp.name] = {}
+			Components[newComp.name] = newComp
+		end
 	end
 end
 

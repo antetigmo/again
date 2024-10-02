@@ -17,7 +17,7 @@ function EnterVehicle.new(object, player, ...)
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
-	self.name = "enterVehicle"
+	self.name = "EnterVehicle"
 	self.instanceID = EnterVehicle.instanceNumber
 	---------------------------------------------
 	
@@ -31,7 +31,7 @@ end
 function EnterVehicle:Init()
 	print("EnterVehicle initiated for class:", self.object.name)
     --CUSTOMS SERVICES
-	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, componentsArray)
+	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
 
@@ -39,7 +39,7 @@ function EnterVehicle:Init()
 end
 
 function EnterVehicle:AddressEvents()
-	self.Entered = self:CreateEnteredEvent()
+	--self.Entered = self:CreateEnteredEvent()
 end
 
 function EnterVehicle:CreateEnteredEvent()

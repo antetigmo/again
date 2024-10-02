@@ -6,7 +6,7 @@ local CollectionService = game:GetService("CollectionService")
 local classManager = require(ServerStorage.Components.ClassManager)
 
 local componentFolder = ServerStorage.vehicleSys.Components
-local componentsArray = {"EventManager"}
+local componentsArray = {}
 
 local vehicleSys = {}
 
@@ -29,14 +29,14 @@ end
 
 function vehicleSys:m_Init()
 	--CUSTOMS SERVICES
-	local classManagerOBJ = classManager.new(self, self.player, componentFolder, componentsArray)
+	local classManagerOBJ = classManager.new(self, self.player, componentFolder, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
 	warn("------")
 	warn("vehicleSys initiated, current version:" , modVersion,"; instanceID:", self.instanceID,"; player:", self.player)
 
 	self:m_AddressEvents()
-	--classManagerOBJ:AddComponents(game.Workspace.SomeCar)
+
 end
 
 function vehicleSys:m_AddressEvents()
