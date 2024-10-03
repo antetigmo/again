@@ -34,6 +34,7 @@ function classManager:Init()
 	warn("classManager initiated for class:", self.object.name)
 
 	self:LoadComponents({"EventManager", "LogManager"})
+
 end
 
 function classManager:LoadComponents(specificComponent) -- Load a component class

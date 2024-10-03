@@ -37,16 +37,19 @@ end
 function LogManager:Init()
 	warn("LogManager initiated for class:", self.object.name)
     self:AddClassifiedTags(nil, defaultTags)
-    self:ClassifyLogs()
+
+    if self.ClassifiedTags == nil then task.wait() end
+
+    self:ClassifyAllLogs()
 end
 
 function LogManager:AddLog(log)
     table.insert(self.Logs, log)
-    self:ClassifyLogs()
+    self:ClassifyLog(log)
 end
 
 function LogManager:PrintClassifiedTags() -- Print in the console the classified logs.
-    for category, logs in pairs(self.ClassifiedTags) do
+    for category, logs in self.ClassifiedTags do
         print("Logs for category:", category)
         for _, log in ipairs(logs) do
             print(log)
@@ -54,23 +57,34 @@ function LogManager:PrintClassifiedTags() -- Print in the console the classified
     end
 end
 
-function LogManager:ClassifyLogs() -- Classify logs inside of self.logs into self.ClassifiedTags
+function LogManager:ClassifyAllLogs() -- Classify all logs inside of self.logs into self.ClassifiedTags.
     for _, log in self.Logs do
-        local foundTag = false 
+        self:ClassifyLog(log)
+    end
+end
 
-        for claTag, _ in self.ClassifiedTags do
-            if string.find(log, claTag) then
-                table.insert(self.ClassifiedTags[claTag], log)
-                foundTag = true 
-                break
-            end  
+function LogManager:ClassifyLog(log) -- Classify a log inside of self.logs into self.ClassifiedTags.
+    local foundTag = false 
+
+    for _, logs in self.ClassifiedTags do    -- Check if the log is already in self.ClassifiedTags.
+        for _, existingLog in logs do               -- If it is, then return.
+            if existingLog == log then
+                return
+            end
         end
-
-        if not foundTag then
-            table.insert(self.ClassifiedTags["Other"], log)
-        end     
     end
 
+    for claTag, _ in self.ClassifiedTags do    -- Check if the log has a classified tag(word) in self.ClassifiedTags.
+        if string.find(log, claTag) then       -- If it has then the insert and loop is broke.
+            table.insert(self.ClassifiedTags[claTag], log)
+            foundTag = true 
+            break
+        end  
+    end
+
+    if not foundTag then                       -- If the a claTag was not found on the log, then add it to "Other"
+        table.insert(self.ClassifiedTags["Other"], log)
+    end     
 end
 
 function LogManager:AddClassifiedTags(tag, arrayOfTags) -- Add tags to ClassifiedTags table.
