@@ -17,6 +17,7 @@ end
 
 function chassi:Init()
 	print("Chassi initiated for class:", self.object.name)
+	print(self)
 end
 
 return chassi

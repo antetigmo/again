@@ -14,6 +14,7 @@ local defaultTags = {
     "Engine",
     "Direction",
     "Chassi",
+    "LogManager",
     "Other"
 }
 

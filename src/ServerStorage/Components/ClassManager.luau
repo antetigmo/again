@@ -31,13 +31,20 @@ function classManager.new(object, player, componentFolder, componentArray)-- obj
 end
 
 function classManager:Init()
-	warn("classManager initiated for class:", self.object.name)
+	--warn("classManager initiated for class:", self.object.name)
 
 	self:LoadComponents({"EventManager", "LogManager"})
 
+	local LogManager = require(self.classComponentsFolder.LogManager)
+	local logManagerOBJ = LogManager.new(self, self.name)
+	logManagerOBJ:Init()
+	
+	logManagerOBJ:AddLog("ClassManager initiated for class: " .. self.object.name)
+
+	
 end
 
-function classManager:LoadComponents(specificComponent) -- Load a component class
+function classManager:LoadComponents(specificComponent) -- Load a component class, speciFicComponent can be an array.
 	if self.componentsArray then -- componentsArray is an array that you specify, to load all the components in that array.
 		for _, component in self.componentsArray do
 
