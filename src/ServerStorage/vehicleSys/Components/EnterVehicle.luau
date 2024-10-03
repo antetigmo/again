@@ -29,12 +29,13 @@ function EnterVehicle.new(object, player, ...)
 end
 
 function EnterVehicle:Init()
-	print("EnterVehicle initiated for class:", self.object.name)
     --CUSTOMS SERVICES
 	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
 
+	self.Components.LogManager:AddLog("EnterVehicle initiated for class: " .. tostring(self.object.name))
+	self.Components.LogManager:Classify()
 	self:AddressEvents()
 end
 
