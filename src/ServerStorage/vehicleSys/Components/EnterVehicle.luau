@@ -3,7 +3,6 @@ local ServerStorage= game:GetService("ServerStorage")
 local CollectionService = game:GetService("CollectionService")
 -----------------
 local ClassManager = require(ServerStorage.Components.ClassManager)
-local componentsArray = {"EventManager"}
 
 local EnterVehicle = {}
 EnterVehicle.__index = EnterVehicle

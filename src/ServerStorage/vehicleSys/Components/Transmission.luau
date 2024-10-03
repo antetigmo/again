@@ -1,3 +1,10 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerStorage= game:GetService("ServerStorage")
+local CollectionService = game:GetService("CollectionService")
+-----------------
+local ClassManager = require(ServerStorage.Components.ClassManager)
+
+
 local transmission = {}
 transmission.__index = transmission
 transmission.instanceNumber = 0
@@ -20,7 +27,12 @@ function transmission.new(object, player, ...)
 end
 
 function transmission:Init()
-	print("Transmission initiated for class:", self.object.name)
+	--CUSTOMS SERVICES
+	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
+	classManagerOBJ:Init()
+	-------------------------------------------
+
+	self.Components.LogManager:AddLog("Transmission initiated for class: " .. self.object.name)
 end
 
 return transmission

@@ -1,3 +1,9 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerStorage= game:GetService("ServerStorage")
+local CollectionService = game:GetService("CollectionService")
+-----------------
+local ClassManager = require(ServerStorage.Components.ClassManager)
+
 local engine = {}
 engine.__index = engine
 engine.instanceNumber = 0
@@ -20,7 +26,12 @@ function engine.new(object, player, ...)
 end
 
 function engine:Init()
-	print("Engine initiated for class:", self.object.name)
+	--CUSTOMS SERVICES
+	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
+	classManagerOBJ:Init()
+	-------------------------------------------
+
+	self.Components.LogManager:AddLog("Engine initiated for class: " .. self.object.name)
 end
 
 return engine

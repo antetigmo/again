@@ -3,7 +3,6 @@ local ServerStorage= game:GetService("ServerStorage")
 local CollectionService = game:GetService("CollectionService")
 -----------------
 local ClassManager = require(ServerStorage.Components.ClassManager)
-local componentsArray = {"EventManager"}
 
 local button = {}
 button.__index = button
@@ -30,6 +29,7 @@ function button:Init()
 	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
+
     self:CreatePrompt(self.actualInstance)
     self:AddressEvents()
 
@@ -42,7 +42,8 @@ end
 
 function button:AddressEvents()
     self.Pressed = self.Prompt.Triggered:Connect(function(playerWhoTriggered)
-        print("Prompt triggered.", self)
+        self.Components.LogManager:AddLog("Prompt triggered." .. self)
+       
         self.EventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
     end)
 end
@@ -54,7 +55,7 @@ function button:CreatePrompt(instance)
     --
     self.Prompt = prompt
 
-    print("Created a ProximityPrompt for instance:", instance)
+    self.Components.LogManager:AddLog("Created a ProximityPrompt for instance: " .. tostring(instance))
 
     return prompt
 end

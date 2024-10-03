@@ -36,12 +36,11 @@ function classManager:Init()
 	self:LoadComponents({"EventManager", "LogManager"})
 
 	local LogManager = require(self.classComponentsFolder.LogManager)
-	local logManagerOBJ = LogManager.new(self, self.name)
-	logManagerOBJ:Init()
+	self.logManagerOBJ = LogManager.new(self, self.name)
+	self.logManagerOBJ:Init()
 	
-	logManagerOBJ:AddLog("ClassManager initiated for class: " .. self.object.name)
+	self.logManagerOBJ:AddLog("ClassManager initiated for class: " .. self.object.name)
 
-	
 end
 
 function classManager:LoadComponents(specificComponent) -- Load a component class, speciFicComponent can be an array.
@@ -123,8 +122,9 @@ function classManager:CreateComponent(instance, componentScript, ...) -- CREATE 
 	end
 
 	newComp:Init()
-
-	warn("Component", newComp.name, "created for instance:",instance)
+	
+	self.logManagerOBJ:AddLog("Component " .. newComp.name ..  " created for instance: " .. tostring(instance))
+	--warn("Component", newComp.name, "created for instance:",instance)
 end
 
 function classManager:GetComponent(componentsArray, name, instanceID)

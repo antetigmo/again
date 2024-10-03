@@ -1,4 +1,9 @@
 local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerStorage= game:GetService("ServerStorage")
+local CollectionService = game:GetService("CollectionService")
+-----------------
+local ClassManager = require(ServerStorage.Components.ClassManager)
 
 local suspension = {}
 suspension.__index = suspension
@@ -22,7 +27,11 @@ function suspension.new(object, player, ...)
 end
 
 function suspension:Init()
-	print("Suspension initiated for class:", self.object.name)
+	--CUSTOMS SERVICES
+	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
+	classManagerOBJ:Init()
+	-------------------------------------------
+	self.Components.LogManager:AddLog("Suspension initiated for class: " .. self.object.name)
 	
 	--self:CreateAllViewers()
 

@@ -1,5 +1,9 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerStorage= game:GetService("ServerStorage")
 local StarterGui = game:GetService("StarterGui")
+local CollectionService = game:GetService("CollectionService")
+-----------------
+local ClassManager = require(ServerStorage.Components.ClassManager)
 
 local vehicleSystemEvents = ReplicatedStorage.vehicleSystemEvents
 
@@ -42,7 +46,13 @@ function direction.new(object, player, ...)
 end
 
 function direction:Init()
-	print("Direction initiated for class:", self.object.name)
+	--CUSTOMS SERVICES
+	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
+	classManagerOBJ:Init()
+	-------------------------------------------
+	
+	self.Components.LogManager:AddLog("Direction initiated for class: " .. self.object.name)
+
 	self:AddressEvents()
 end
 

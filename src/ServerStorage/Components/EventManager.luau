@@ -20,7 +20,7 @@ function eventManager.new(object, player)
 end
 
 function eventManager:Init()
-	warn("eventManager initiated for class:", self.object.name)
+	--warn("eventManager initiated for class:", self.object.name)
 end
 
 function eventManager:ConnectEvent(eventName, callback)

@@ -36,12 +36,13 @@ function LogManager.new(object, player, ...)
 end
 
 function LogManager:Init()
-	warn("LogManager initiated for class:", self.object.name)
+	--warn("LogManager initiated for class:", self.object.name)
     self:AddClassifiedTags(nil, defaultTags)
 
     if self.ClassifiedTags == nil then task.wait() end
-
     self:ClassifyAllLogs()
+
+    self:AddLog("LogManager initiated for class:", self.object.name)
 end
 
 function LogManager:AddLog(log)
