@@ -29,8 +29,6 @@ function vehicle.new(object, player, ...)
 end
 
 function vehicle:Init()
-	print("vehicle initiated for vehicle:", self.car.Name, "and for class:", self.object.name)
-	
 	--CUSTOMS SERVICES
 	local classManagerOBJ = ClassManager.new(self, self.player, componentFolder, nil)
 	classManagerOBJ:Init()
@@ -38,6 +36,9 @@ function vehicle:Init()
 
 	classManagerOBJ:AddSpecificComponent(self.car, nil, vehicle.componentsArray)
 	classManagerOBJ:AddSpecificComponent(self.car.Seat, "Button", nil)
+
+	self.Components.LogManager:AddLog("Vehicle initiated for vehicle: " .. self.car.Name .. " and for class: " ..self.object.name)
+	print(self.Components.LogManager)
 end
 
 

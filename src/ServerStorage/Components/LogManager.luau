@@ -11,6 +11,7 @@ local defaultTags = {
     "EnterVehicle",
     "Suspension",
     "Transmission",
+    "Other"
 }
 
 function LogManager.new(object, player, ...)
@@ -38,6 +39,7 @@ end
 
 function LogManager:AddLog(log)
     table.insert(self.Logs, log)
+    self:ClassifyLogs()
 end
 
 function LogManager:PrintClassifiedTags() -- Print in the console the classified logs.
@@ -50,12 +52,9 @@ function LogManager:PrintClassifiedTags() -- Print in the console the classified
 end
 
 function LogManager:ClassifyLogs() -- Classify logs inside of self.logs into self.ClassifiedTags
-    print("---------")
-    print("---------")
-    print("---------")
     for _, log in self.Logs do
-        print(log)
-        for _, claTag in self.ClassifiedTags do
+        for claTag, _ in self.ClassifiedTags do
+            --print(claTag, log)
             if string.find(log, claTag) then
                 table.insert(self.ClassifiedTags[claTag], log)
             else

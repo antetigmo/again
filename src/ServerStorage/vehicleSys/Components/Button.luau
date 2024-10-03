@@ -33,6 +33,8 @@ function button:Init()
     self:CreatePrompt(self.actualInstance)
     self:AddressEvents()
 
+    self.Components.LogManager:AddLog("Button initiated for class: " .. tostring(self.object.name))
+    
     self.InitStatus = true
 end
 
