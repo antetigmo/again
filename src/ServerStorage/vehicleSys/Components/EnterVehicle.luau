@@ -36,7 +36,7 @@ function EnterVehicle:Init()
 
 	self.Components.LogManager:AddLog("EnterVehicle initiated for class: " .. tostring(self.object.name))
 
-	print(self.Components.LogManager.ClassifiedTags)
+	print(self.Components.LogManager)
 	self:AddressEvents()
 end
 

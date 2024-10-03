@@ -34,6 +34,10 @@ function button:Init()
     self:AddressEvents()
 
     self.Components.LogManager:AddLog("Button initiated for class: " .. tostring(self.object.name))
+    self.Components.LogManager:AddLog("Teste lindo!")
+    self.Components.LogManager:AddLog("Olha o teste legal!")
+
+    print(self.Components.LogManager)
     
     self.InitStatus = true
 end

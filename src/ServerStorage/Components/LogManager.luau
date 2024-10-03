@@ -11,6 +11,9 @@ local defaultTags = {
     "EnterVehicle",
     "Suspension",
     "Transmission",
+    "Engine",
+    "Direction",
+    "Chassi",
     "Other"
 }
 
@@ -53,15 +56,21 @@ end
 
 function LogManager:ClassifyLogs() -- Classify logs inside of self.logs into self.ClassifiedTags
     for _, log in self.Logs do
+        local foundTag = false 
+
         for claTag, _ in self.ClassifiedTags do
-            --print(claTag, log)
             if string.find(log, claTag) then
                 table.insert(self.ClassifiedTags[claTag], log)
-            else
-                table.insert(self.ClassifiedTags["Other"], log)
-            end
+                foundTag = true 
+                break
+            end  
         end
+
+        if not foundTag then
+            table.insert(self.ClassifiedTags["Other"], log)
+        end     
     end
+
 end
 
 function LogManager:AddClassifiedTags(tag, arrayOfTags) -- Add tags to ClassifiedTags table.
