@@ -44,7 +44,11 @@ function button:AddressEvents()
     self.Pressed = self.Prompt.Triggered:Connect(function(playerWhoTriggered)
         self.Components.LogManager:AddLog("Prompt triggered." .. tostring(self))
 
-        self.EventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
+        --self.EventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
+        local serverInstance = self.object:GetServerInstance()
+        local PlayerEventManager = serverInstance.mainsReferences[playerWhoTriggered.Name].Components.EventManager
+        PlayerEventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
+
    
     end)
 end

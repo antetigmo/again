@@ -37,6 +37,15 @@ function vehicleSys:m_Init()
 
 	self:m_AddressEvents()
 
+	task.spawn(function()
+		task.wait(15)
+		self:RefreshMainsReferences()
+	end)
+
+end
+
+function vehicleSys:RefreshMainsReferences() -- Refresh the table mainsReferences, by __newindex in server(startVehicleSystem).
+	self.mainsReferences = self.mainsReferences.ServerClassManager["mainsReferences"]
 end
 
 function vehicleSys:m_AddressEvents()

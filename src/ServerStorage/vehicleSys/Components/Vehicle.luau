@@ -41,5 +41,9 @@ function vehicle:Init()
 	--print(self.Components.LogManager.ClassifiedTags)
 end
 
+function vehicle:GetServerInstance() -- Gets the ServerInstance table by looking at object
+	local serverInstance = self.object
+	return serverInstance
+end
 
 return vehicle
