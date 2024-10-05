@@ -19,7 +19,6 @@ function button.new(object, player, instance)        --- Creates a proximity pro
     self.InitStatus = false
 	---------------------------------------------
 
-    self.EventManager = self.object.Components.eventManager
     self.actualInstance = instance
 	return self
 end
@@ -29,6 +28,7 @@ function button:Init()
 	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
+    self.EventManager = self.Components.EventManager
 
     self:CreatePrompt(self.actualInstance)
     self:AddressEvents()
@@ -42,9 +42,10 @@ end
 
 function button:AddressEvents()
     self.Pressed = self.Prompt.Triggered:Connect(function(playerWhoTriggered)
-        self.Components.LogManager:AddLog("Prompt triggered." .. self)
-       
+        self.Components.LogManager:AddLog("Prompt triggered." .. tostring(self))
+
         self.EventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
+   
     end)
 end
 

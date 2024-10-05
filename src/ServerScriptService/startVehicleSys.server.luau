@@ -4,13 +4,16 @@ local ServerStorage = game:GetService("ServerStorage")
 local vehicleSysModule = require(ServerStorage.vehicleSys.VehicleSysModule)
 local mainsReferences = {}
 
-Players.PlayerAdded:Connect(function(player)
+local metaTable = setmetatable({}, mainsReferences)
 
+Players.PlayerAdded:Connect(function(player)
 	local vehicleSysModuleOBJ = vehicleSysModule.new(player)
-    vehicleSysModuleOBJ["mainsReference"] = mainsReferences.ServerClassManager
-    vehicleSysModuleOBJ:m_Init()
-    
+
     mainsReferences[vehicleSysModuleOBJ.player.Name] = vehicleSysModuleOBJ 
+    vehicleSysModuleOBJ["mainsReference"] = mainsReferences
+
+    vehicleSysModuleOBJ:m_Init()
+
 end)
 
 local ServerInstance = require(ServerStorage.Components.ServerInstance)
@@ -24,6 +27,7 @@ serverClassManager:Init()
 
 serverInstanceOBJ["mainsReferences"] = mainsReferences
 mainsReferences[serverClassManager.player] = serverClassManager
+
 
 serverClassManager:AddComponents(game.Workspace.SomeCar)
 serverClassManager:AddComponents(game.Workspace.SomeCar2)

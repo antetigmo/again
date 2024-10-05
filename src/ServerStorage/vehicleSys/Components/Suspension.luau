@@ -44,7 +44,7 @@ function suspension:Init()
 			local chassi = self.Car.Chassi 
 			local weight = chassi.AssemblyMass * workspace.Gravity
 
-			--chassi:ApplyImpulse(Vector3.new(0, (weight * delta)*1.02, 0)) 
+			chassi:ApplyImpulse(Vector3.new(0, (weight * delta)*1.02, 0)) 
 		end
 	end)
 end

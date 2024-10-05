@@ -38,7 +38,7 @@ function vehicle:Init()
 	classManagerOBJ:AddSpecificComponent(self.car.Seat, "Button", nil)
 
 	self.Components.LogManager:AddLog("Vehicle initiated for vehicle: " .. self.car.Name .. " and for class: " ..self.object.name)
-	--print(self.Components.LogManager)
+	--print(self.Components.LogManager.ClassifiedTags)
 end
 
 
