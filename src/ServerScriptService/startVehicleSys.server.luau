@@ -19,7 +19,7 @@ local mainsReferences = setmetatable({},{
 Players.PlayerAdded:Connect(function(player)
 	local vehicleSysModuleOBJ = vehicleSysModule.new(player)
 
-    mainsReferences[vehicleSysModuleOBJ.player] = vehicleSysModuleOBJ 
+    mainsReferences[vehicleSysModuleOBJ.player.Name] = vehicleSysModuleOBJ 
     vehicleSysModuleOBJ["mainsReferences"] = mainsReferences
 
     vehicleSysModuleOBJ:m_Init()

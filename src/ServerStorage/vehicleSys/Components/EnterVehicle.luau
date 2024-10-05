@@ -19,8 +19,9 @@ function EnterVehicle.new(object, player, ...)
 	self.name = "EnterVehicle"
 	self.instanceID = EnterVehicle.instanceNumber
 	---------------------------------------------
-	
     self.EventManager = self.object.Components.eventManager
+
+
 	self.car = args[1]
 	self.Seat = self.car.Seat 
 
@@ -32,7 +33,6 @@ function EnterVehicle:Init()
 	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
-
 	self.Components.LogManager:AddLog("EnterVehicle initiated for class: " .. tostring(self.object.name))
 
 	self:AddressEvents()
@@ -40,6 +40,7 @@ end
 
 function EnterVehicle:AddressEvents()
 	--self.Entered = self:CreateEnteredEvent()
+
 end
 
 function EnterVehicle:CreateEnteredEvent()
@@ -51,10 +52,12 @@ function EnterVehicle:CreateEnteredEvent()
 end
 
 function EnterVehicle:Enter(player) -- Enter/sit in the vehicle.
-	if player == self.player then
-		print("Player is player.", player, self.player)
-	end
+	print("Player is player.", player)
 end
 
+function EnterVehicle:GetServerInstance() -- Gets the ServerInstance table by looking at object
+	local serverInstance = self.object
+	return serverInstance
+end
 
 return EnterVehicle

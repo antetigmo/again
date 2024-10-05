@@ -36,9 +36,22 @@ function vehicle:Init()
 
 	classManagerOBJ:AddSpecificComponent(self.car, nil, vehicle.componentsArray)
 	classManagerOBJ:AddSpecificComponent(self.car.Seat, "Button", nil)
+	self.Button = self.Components.Button[1] or self.Components.Button[2] -- NEED TO FIND A BETTER WAY, THIS IS TEMPORARY.
+	
 
 	self.Components.LogManager:AddLog("Vehicle initiated for vehicle: " .. self.car.Name .. " and for class: " ..self.object.name)
-	--print(self.Components.LogManager.ClassifiedTags)
+	self:AddressEvents()
+end
+
+function vehicle:AddressEvents()
+	print(self.Button)
+	self.Pressed = self.Button.Prompt.Triggered:Connect(function(playerWhoTriggered)
+        self.Components.LogManager:AddLog("Prompt triggered." .. tostring(self))
+
+        local serverInstance = self:GetServerInstance()
+        self.Components.EnterVehicle[2]:Enter(playerWhoTriggered)
+   
+    end)
 end
 
 function vehicle:GetServerInstance() -- Gets the ServerInstance table by looking at object

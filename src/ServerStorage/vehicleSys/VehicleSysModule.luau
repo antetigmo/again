@@ -50,7 +50,6 @@ end
 
 function vehicleSys:m_AddressEvents()
 	warn("vehicleSys addressed all necessary events.")
-	print(self)
 end
 
 return vehicleSys

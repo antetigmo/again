@@ -28,7 +28,6 @@ function button:Init()
 	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
-    self.EventManager = self.Components.EventManager
 
     self:CreatePrompt(self.actualInstance)
     self:AddressEvents()
@@ -41,16 +40,13 @@ function button:Init()
 end
 
 function button:AddressEvents()
-    self.Pressed = self.Prompt.Triggered:Connect(function(playerWhoTriggered)
-        self.Components.LogManager:AddLog("Prompt triggered." .. tostring(self))
+    self.Components.LogManager:AddLog("Prompt triggered." .. tostring(self))
 
-        --self.EventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
-        local serverInstance = self.object:GetServerInstance()
-        local PlayerEventManager = serverInstance.mainsReferences[playerWhoTriggered.Name].Components.EventManager
-        PlayerEventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
-
-   
-    end)
+    --self.EventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
+    -- local serverInstance = self.object:GetServerInstance()
+        
+    -- local PlayerEventManager = serverInstance.mainsReferences[playerWhoTriggered.Name].Components.EventManager
+    --PlayerEventManager:PublishTopic("Pressed", playerWhoTriggered, self.actualInstance, self.instanceID)
 end
 
 function button:CreatePrompt(instance)
