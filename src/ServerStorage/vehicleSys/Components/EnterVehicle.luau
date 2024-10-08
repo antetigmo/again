@@ -1,3 +1,4 @@
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage= game:GetService("ServerStorage")
 local CollectionService = game:GetService("CollectionService")
@@ -53,6 +54,7 @@ end
 
 function EnterVehicle:Enter(player) -- Enter/sit in the vehicle.
 	print("Player is player.", player)
+	self.Seat:Sit(player.Character:FindFirstChildWhichIsA("Humanoid"))
 end
 
 function EnterVehicle:GetServerInstance() -- Gets the ServerInstance table by looking at object
