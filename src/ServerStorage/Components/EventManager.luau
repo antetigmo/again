@@ -31,20 +31,18 @@ function eventManager:ConnectEvent(eventName, callback)
 	end
 	
 	local eventSubscription = self:SubscribeTopic(eventName, function(player, ...)
-		if player == self.object.player then
-			ObjectOnArray("args")
+		ObjectOnArray("args")
 
-			self.args[self.object.name][eventName] = {player, ...}
-			print(self.args)
+		self.args[self.object.name][eventName] = {player, ...}
+		print(self.args)
 
-			callback(unpack(self.args[self.object.name][eventName]))
-			warn(eventName, "event, arrived at eventManager")
-		end
+		callback(unpack(self.args[self.object.name][eventName]))
+		warn(eventName, "event, arrived at eventManager")
 	end)
 
 	ObjectOnArray("events")
 	self.events[self.object.name][eventName] = eventSubscription
-	print(self.events)
+	--print(self.events)
 	
 	return eventSubscription
 end
@@ -52,6 +50,7 @@ end
 function eventManager:DisconnectEvent(eventName)
 	warn("--- Disconnection incoming ---")
 	self.events[self.object.name][eventName]:Disconnect()
+	self.events[self.object.name][eventName] = nil
 
 	local objName = self.object.name
 	warn("2 - ",eventName, "Disconnected.", eventName, "connected status is:", self.events[objName][eventName].Connected)
@@ -63,7 +62,7 @@ function eventManager:ResetEvent(eventName)
 	self:ConnectEvent(eventName)
 end
 
---function eventManager:DisconnectAll()
+--function eventManager:DisconnectAll() -- Disconnect all events
 
 --end
 

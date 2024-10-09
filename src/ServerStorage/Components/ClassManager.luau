@@ -10,7 +10,7 @@ local modVersion = "0.0.0"
 
 classManager.instanceNumber = 0
 
-function classManager.new(object, player, componentFolder, componentArray)-- object main, player, componentFolder(location of the folder), specific array.
+function classManager.new(object, player, componentFolder, componentArray)
 	classManager.instanceNumber += 1	
 	local self = setmetatable({}, classManager)
 	-- ALL CLASSES MUST HAVE THESE \/
@@ -23,16 +23,15 @@ function classManager.new(object, player, componentFolder, componentArray)-- obj
 	self.object.Components = {}
 	self.object.Components[self.name] = self
 	
-	self.componentFolder = componentFolder
-	self.classComponentsFolder = ServerStorage.Components
+	self.componentFolder = componentFolder	-- Folder where the components are.
+	self.classComponentsFolder = ServerStorage.Components -- Folder where the main components are.
+
 	self.componentsArray = componentArray
 	
 	return self
 end
 
 function classManager:Init()
-	--warn("classManager initiated for class:", self.object.name)
-
 	self:LoadComponents({"EventManager", "LogManager"})
 
 	local LogManager = require(self.classComponentsFolder.LogManager)
@@ -44,7 +43,7 @@ function classManager:Init()
 end
 
 function classManager:LoadComponents(specificComponent) -- Load a component class, speciFicComponent can be an array.
-	if self.componentsArray then -- componentsArray is an array that you specify, to load all the components in that array.
+	if self.componentsArray then -- componentsArray is an array that you specify, to load components in that array.
 		for _, component in self.componentsArray do
 
 			local Components = self.object.Components
@@ -72,21 +71,7 @@ function classManager:LoadComponents(specificComponent) -- Load a component clas
 	end
 end
 
-function classManager:AddAll(instanceFolder, tag) -- ADD ALL COMPONENTS TO THE DESIRED PART IF IT HAVE THE TAG.
-	local instancesArray = instanceFolder.getChildren()
-	if not instanceFolder then
-		return print("No instance folder, AddAll didn't worked.")
-	end
-	
-	for _, instance in instancesArray do
-		if CollectionService:HasTag(instance, tag) then
-			self:AddComponents(instance)
-			warn("Creating components for instance:", instance)
-		end
-	end
-end
-
-function classManager:AddComponents(instance)    -- ADD ALL COMPONENTS THAT THE INSTANCE HAS TAGGED.
+function classManager:AddComponents(instance)    -- Add all components, that the instance has tagged.
 	for _, tag in CollectionService:GetTags(instance) do
 		local component = self.componentFolder:FindFirstChild(tag)
 		if component then
@@ -96,7 +81,7 @@ function classManager:AddComponents(instance)    -- ADD ALL COMPONENTS THAT THE 
 end
 
 function classManager:AddSpecificComponent(instance, component, componentArray)
-	if not componentArray then					 -- ADD ANY SPECIFIC COMPONENT, OR AN SPECIFIC ARRAY, TO THE INSTANCE.
+	if not componentArray then			-- Add any specific component, or on specific array, to the instance.
 		local actualComponent = self.componentFolder:FindFirstChild(component)
 		self:CreateComponent(instance, actualComponent)
 		return
@@ -110,8 +95,8 @@ function classManager:AddSpecificComponent(instance, component, componentArray)
 	end
 end
 
-function classManager:CreateComponent(instance, componentScript, ...) -- CREATE AND INIT A COMPONENT
-	local compModule = require(componentScript)						  -- ALSO ADDRESS IN OBJ ARRAY
+function classManager:CreateComponent(instance, componentScript, ...) -- Create and init a component.
+	local compModule = require(componentScript)						  -- Also address it on the component/object.
 	local newComp = compModule.new(self.object, self.player, instance)
 
 	if self.object.Components[newComp.name] then
@@ -124,7 +109,6 @@ function classManager:CreateComponent(instance, componentScript, ...) -- CREATE 
 	newComp:Init()
 	
 	self.logManagerOBJ:AddLog("Component " .. newComp.name ..  " created for instance: " .. tostring(instance))
-	--warn("Component", newComp.name, "created for instance:",instance)
 end
 
 function classManager:GetComponent(componentsArray, name, instanceID)

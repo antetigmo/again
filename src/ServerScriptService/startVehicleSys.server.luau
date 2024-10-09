@@ -36,8 +36,6 @@ serverClassManager:Init()
 
 serverInstanceOBJ["mainsReferences"] = mainsReferences
 
-
-
 mainsReferences[serverClassManager.player] = serverClassManager
 
 

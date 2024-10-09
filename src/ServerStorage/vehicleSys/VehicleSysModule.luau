@@ -9,8 +9,8 @@ local componentFolder = ServerStorage.vehicleSys.Components
 local componentsArray = {}
 
 local vehicleSys = {}
-
 vehicleSys.__index = vehicleSys
+
 local modVersion = "0.0.0"
 
 vehicleSys.instanceNumber = 0
@@ -50,6 +50,11 @@ end
 
 function vehicleSys:m_AddressEvents()
 	warn("vehicleSys addressed all necessary events.")
+
+	self.EnteredEvent = self.Components.EventManager:ConnectEvent("Entered", function()
+		
+	end)
+
 end
 
 return vehicleSys

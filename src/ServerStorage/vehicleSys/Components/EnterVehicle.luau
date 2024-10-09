@@ -20,8 +20,8 @@ function EnterVehicle.new(object, player, ...)
 	self.name = "EnterVehicle"
 	self.instanceID = EnterVehicle.instanceNumber
 	---------------------------------------------
-    self.EventManager = self.object.Components.eventManager
-
+    self.VehicleEventManager = self.object.Components.eventManager
+	self.ServerInstance = self.object:GetServerInstance()
 
 	self.car = args[1]
 	self.Seat = self.car.Seat 
@@ -40,21 +40,17 @@ function EnterVehicle:Init()
 end
 
 function EnterVehicle:AddressEvents()
-	--self.Entered = self:CreateEnteredEvent()
-
-end
-
-function EnterVehicle:CreateEnteredEvent()
-	local Entered = self.EventManager:ConnectEvent("Pressed", function(player)
-		self:Enter(player)
+	self.EnteredVehicle = self.Components.EventManager:ConnectEvent("Entered", function(player)
+		local playerEventManager = self.ServerInstance.mainsReferences[player.Name].Components.EventManager
+		playerEventManager:PublishTopic("Entered")
 	end)
-
-	return Entered
 end
 
 function EnterVehicle:Enter(player) -- Enter/sit in the vehicle.
-	print("Player is player.", player)
+	--print("Player is player:", player)
+	self.currentPlayer = player
 	self.Seat:Sit(player.Character:FindFirstChildWhichIsA("Humanoid"))
+	self.Components.EventManager:PublishTopic("Entered", player)
 end
 
 function EnterVehicle:GetServerInstance() -- Gets the ServerInstance table by looking at object

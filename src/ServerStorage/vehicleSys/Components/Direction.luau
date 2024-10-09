@@ -27,7 +27,7 @@ function direction.new(object, player, ...)
 	self.instanceID = direction.instanceNumber
 	---------------------------------------------
 	
-	self.Car = nil
+	self.Car = self.object.car
 	
 	if self.Car then
 		self.leftWheel = self.Car.Suspension.wheelL
