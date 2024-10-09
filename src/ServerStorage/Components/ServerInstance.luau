@@ -5,12 +5,12 @@ serverInstance.instanceNumber = 0
 function serverInstance.new(player, ...)
 	serverInstance.instanceNumber += 1
 	local self = setmetatable({}, serverInstance)
-	local args = {...}
+	local Args = {...}
 	
 	-- ALL CLASSES MUST HAVE THESE \/
-	self.player = player
-	self.name = "ServerInstance"
-	self.instanceID = serverInstance.instanceNumber
+	self.Player = player
+	self.Name = "ServerInstance"
+	self.InstanceID = serverInstance.instanceNumber
 	---------------------------------------------
 	
 	return self

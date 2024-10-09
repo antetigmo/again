@@ -1,7 +1,7 @@
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
 ---
-local inventoryModule = require(ServerStorage.inventorySys.inventorySysModule)
+local inventoryModule = require(ServerStorage.InventorySys.InventorySysModule)
 
 Players.PlayerAdded:Connect(function(player)
 	local inventoryObj = inventoryModule.new(player)

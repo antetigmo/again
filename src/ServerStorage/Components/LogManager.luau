@@ -1,8 +1,8 @@
-local LogManager = {}
-LogManager.__index = LogManager
-LogManager.instanceNumber = 0
+local logManager = {}
+logManager.__index = logManager
+logManager.InstanceNumber = 0
 
-local defaultTags = {
+local DefaultTags = {
     "ClassManager",
     "EventManager",
     "ServerInstance",
@@ -18,16 +18,16 @@ local defaultTags = {
     "Other"
 }
 
-function LogManager.new(object, player, ...)
-	LogManager.instanceNumber += 1
-	local self = setmetatable({}, LogManager)
+function logManager.new(object, player, ...)
+	logManager.InstanceNumber += 1
+	local self = setmetatable({}, logManager)
 	local args = {...}
 	
 	-- ALL CLASSES MUST HAVE THESE \/
-	self.object = object
-	self.player = player
-	self.name = "LogManager"
-	self.instanceID = LogManager.instanceNumber
+	self.Object = object
+	self.Player = player
+	self.Name = "LogManager"
+	self.InstanceID = logManager.InstanceNumber
 	---------------------------------------------
 	
 	self.Logs = {}
@@ -35,22 +35,21 @@ function LogManager.new(object, player, ...)
 	return self
 end
 
-function LogManager:Init()
-	--warn("LogManager initiated for class:", self.object.name)
-    self:AddClassifiedTags(nil, defaultTags)
+function logManager:Init()
+    self:AddClassifiedTags(nil, DefaultTags)
 
     if self.ClassifiedTags == nil then task.wait() end
     self:ClassifyAllLogs()
 
-    self:AddLog("LogManager initiated for class:", self.object.name)
+    self:AddLog("logManager initiated for class:", self.Object.Name)
 end
 
-function LogManager:AddLog(log)
+function logManager:AddLog(log)
     table.insert(self.Logs, log)
     self:ClassifyLog(log)
 end
 
-function LogManager:PrintClassifiedTags() -- Print in the console the classified logs.
+function logManager:PrintClassifiedTags() -- Print in the console the classified logs.
     for category, logs in self.ClassifiedTags do
         print("Logs for category:", category)
         for _, log in ipairs(logs) do
@@ -59,13 +58,13 @@ function LogManager:PrintClassifiedTags() -- Print in the console the classified
     end
 end
 
-function LogManager:ClassifyAllLogs() -- Classify all logs inside of self.logs into self.ClassifiedTags.
+function logManager:ClassifyAllLogs() -- Classify all logs inside of self.logs into self.ClassifiedTags.
     for _, log in self.Logs do
         self:ClassifyLog(log)
     end
 end
 
-function LogManager:ClassifyLog(log) -- Classify a log inside of self.logs into self.ClassifiedTags.
+function logManager:ClassifyLog(log) -- Classify a log inside of self.logs into self.ClassifiedTags.
     local foundTag = false 
 
     for _, logs in self.ClassifiedTags do    -- Check if the log is already in self.ClassifiedTags.
@@ -89,7 +88,7 @@ function LogManager:ClassifyLog(log) -- Classify a log inside of self.logs into 
     end     
 end
 
-function LogManager:AddClassifiedTags(tag, arrayOfTags) -- Add tags to ClassifiedTags table.
+function logManager:AddClassifiedTags(tag, arrayOfTags) -- Add tags to ClassifiedTags table.
     if arrayOfTags then
         for _, tagV in arrayOfTags do
             self.ClassifiedTags[tagV] = {}
@@ -99,12 +98,12 @@ function LogManager:AddClassifiedTags(tag, arrayOfTags) -- Add tags to Classifie
     self.ClassifiedTags[tag] = {} 
 end
 
-function LogManager:CheckStatus(component)
+function logManager:CheckStatus(component)
     if component.InitStatus == true then
-        print("Component:", component.name, "has initialized correctly, status is:", component.InitStatus)
+        print("Component:", component.Name, "has initialized correctly, status is:", component.InitStatus)
     else
-        print("Component:", component.name, "has failed to initialize.")
+        print("Component:", component.Name, "has failed to initialize.")
     end
 end
 
-return LogManager
+return logManager

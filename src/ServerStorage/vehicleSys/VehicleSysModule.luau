@@ -10,10 +10,9 @@ local componentsArray = {}
 
 local vehicleSys = {}
 vehicleSys.__index = vehicleSys
+vehicleSys.instanceNumber = 0
 
 local modVersion = "0.0.0"
-
-vehicleSys.instanceNumber = 0
 
 function vehicleSys.new(player)
 	vehicleSys.instanceNumber += 1 

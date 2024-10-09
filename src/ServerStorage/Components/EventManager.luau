@@ -1,60 +1,60 @@
 local eventManager = {}
 eventManager.__index = eventManager
-eventManager.instanceNumber = 0
+eventManager.InstanceNumber = 0
 
 function eventManager.new(object, player)
-	eventManager.instanceNumber += 1
+	eventManager.InstanceNumber += 1
 	local self = setmetatable({}, eventManager)
 	-- ALL CLASSES MUST HAVE THESE \/
-	self.object = object
-	self.player = player
-	self.name = "EventManager"
-	self.instanceID = eventManager.instanceNumber
+	self.Object = object
+	self.Player = player
+	self.Name = "EventManager"
+	self.InstanceID = eventManager.InstanceNumber
 	---------------------------------------------
 	
 	self._topicEvent = Instance.new("BindableEvent")
-	self.events = {}
-	self.args = {}
+	self.Events = {}
+	self.Args = {}
 
 	return self
 end
 
 function eventManager:Init()
-	--warn("eventManager initiated for class:", self.object.name)
+	--warn("eventManager initiated for class:", self.Object.name)
 end
 
 function eventManager:ConnectEvent(eventName, callback)
 	local function ObjectOnArray(array)
-		if not self[array][self.object.name] then
-			self[array][self.object.name] = {}
+		if not self[array][self.Object.Name] then
+			self[array][self.Object.Name] = {}
 		end
 	end
 	
 	local eventSubscription = self:SubscribeTopic(eventName, function(player, ...)
-		ObjectOnArray("args")
+		ObjectOnArray("Args")
 
-		self.args[self.object.name][eventName] = {player, ...}
-		print(self.args)
+		self.Args[self.Object.Name][eventName] = {player, ...}
+		print(self.Args)
 
-		callback(unpack(self.args[self.object.name][eventName]))
+		callback(unpack(self.Args[self.Object.Name][eventName]))
 		warn(eventName, "event, arrived at eventManager")
 	end)
 
 	ObjectOnArray("events")
-	self.events[self.object.name][eventName] = eventSubscription
-	--print(self.events)
+	self.Events[self.Object.Name][eventName] = eventSubscription
+	--print(self.Events)
 	
 	return eventSubscription
 end
 
 function eventManager:DisconnectEvent(eventName)
 	warn("--- Disconnection incoming ---")
-	self.events[self.object.name][eventName]:Disconnect()
-	self.events[self.object.name][eventName] = nil
+	self.Events[self.Object.Name][eventName]:Disconnect()
+	self.Events[self.Object.Name][eventName] = nil
 
-	local objName = self.object.name
-	warn("2 - ",eventName, "Disconnected.", eventName, "connected status is:", self.events[objName][eventName].Connected)
-	warn(self.events)
+	local objName = self.Object.Name
+	warn("2 - ",eventName, "Disconnected.", eventName, "connected status is:", self.Events[objName][eventName].Connected)
+	warn(self.Events)
 end
 
 function eventManager:ResetEvent(eventName)

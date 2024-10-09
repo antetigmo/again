@@ -1,7 +1,7 @@
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
 ---
-local vehicleSysModule = require(ServerStorage.vehicleSys.VehicleSysModule)
+local vehicleSysModule = require(ServerStorage.VehicleSys.VehicleSysModule)
 
 local function RefreshMainReferences(table)
     for _, mainRefs in table do

@@ -4,10 +4,7 @@ local PlayersService = game:GetService("Players")
 local CollectionService = game:GetService("CollectionService")
 
 local classManager = {}
-
 classManager.__index = classManager
-local modVersion = "0.0.0"
-
 classManager.instanceNumber = 0
 
 function classManager.new(object, player, componentFolder, componentArray)
@@ -45,14 +42,11 @@ end
 function classManager:LoadComponents(specificComponent) -- Load a component class, speciFicComponent can be an array.
 	if self.componentsArray then -- componentsArray is an array that you specify, to load components in that array.
 		for _, component in self.componentsArray do
-
 			local Components = self.object.Components
-	
 			local compModule = require(self.classComponentsFolder:FindFirstChild(component))
 			local newComp = compModule.new(self.object, self.player)
 			newComp:Init()
-	
-			Components[newComp.name] = {}
+
 			Components[newComp.name] = newComp
 		end
 	end
