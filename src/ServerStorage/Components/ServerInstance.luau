@@ -17,7 +17,7 @@ function serverInstance.new(player, ...)
 end
 
 function serverInstance:Init()
-	print("ServerInstance initiated for the server and for:".. self.player)
+	print("ServerInstance initiated for the server and for: ".. self.player)
 end
 
 function serverInstance:GetItself()

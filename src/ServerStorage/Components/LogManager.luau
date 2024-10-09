@@ -41,7 +41,7 @@ function logManager:Init()
     if self.classifiedTags == nil then task.wait() end
     self:ClassifyAllLogs()
 
-    self:AddLog("logManager initiated for class:", self.object.name)
+    self:AddLog("LogManager initiated for class: " .. self.object.name)
 end
 
 function logManager:AddLog(log)
@@ -50,10 +50,16 @@ function logManager:AddLog(log)
 end
 
 function logManager:ShowLogs() -- Print in the console the classified logs.
-    for category, logs in self.classifiedTags do
-        print("logs for category:", category)
-        for _, log in ipairs(logs) do
-            print(log)
+    warn(self.object.name, "Called for ShowLogs.")
+    for category, logs in pairs(self.classifiedTags) do
+        if #logs > 0 then
+            print("Logs for category:", category)
+            local logArray = {}
+        
+            for _, log in ipairs(logs) do
+                table.insert(logArray, log)
+            end
+            print(logArray)
         end
     end
 end

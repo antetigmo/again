@@ -28,7 +28,7 @@ end
 
 function suspension:Init()
 	--CUSTOMS SERVICES
-	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
+	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.VehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
 	self.Components.LogManager:AddLog("Suspension initiated for class: " .. self.object.name)

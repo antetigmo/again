@@ -2,7 +2,7 @@ local ServerStorage= game:GetService("ServerStorage")
 local CollectionService = game:GetService("CollectionService")
 
 local ClassManager = require(ServerStorage.Components.ClassManager)
-local componentFolder = ServerStorage.vehicleSys.Components
+local componentFolder = ServerStorage.VehicleSys.Components
 
 local vehicle = {}
 vehicle.__index = vehicle
@@ -36,7 +36,7 @@ function vehicle:Init()
 
 	classManagerOBJ:AddSpecificComponent(self.car, nil, vehicle.componentsArray)	-- WARN
 	classManagerOBJ:AddSpecificComponent(self.car.Seat, "Button", nil)
-	self.Button = self.Components.Button[self.instanceID] -- Find a better way to index instead of self.instanceID.
+	--self.Button = self.Components.Button[self.instanceID] -- Find a better way to index instead of self.instanceID.
 	
 
 	self.Components.LogManager:AddLog("Vehicle initiated for vehicle: " .. self.car.Name .. " and for class: " ..self.object.name)
@@ -44,12 +44,12 @@ function vehicle:Init()
 end
 
 function vehicle:AddressEvents()
-	self.Pressed = self.Button.Prompt.Triggered:Connect(function(playerWhoTriggered) -- WARN
-        self.Components.LogManager:AddLog("Prompt triggered." .. tostring(self))
+	--self.Pressed = self.Button.Prompt.Triggered:Connect(function(playerWhoTriggered) -- WARN
+       -- self.Components.LogManager:AddLog("Prompt triggered." .. tostring(self))
 
-        local serverInstance = self:GetServerInstance()
-        self.Components.EnterVehicle[self.instanceID]:Enter(playerWhoTriggered) -- Find a better way to index instead of self.instanceID.
-    end)
+       -- local serverInstance = self:GetServerInstance()
+       -- self.Components.EnterVehicle[self.instanceID]:Enter(playerWhoTriggered) -- Find a better way to index instead of self.instanceID.
+   -- end)
 end
 
 function vehicle:GetServerInstance() -- Gets the ServerInstance table by looking at object

@@ -42,18 +42,23 @@ end
 function classManager:LoadComponents(specificComponent) -- Load a component class, speciFicComponent can be an array.
 	if self.componentsArray then -- componentsArray is an array that you specify, to load components in that array.
 		for _, component in self.componentsArray do
-			local Components = self.object.Components
-			local compModule = require(self.classComponentsFolder:FindFirstChild(component))
-			local newComp = compModule.new(self.object, self.player)
-			newComp:Init()
-
-			Components[newComp.name] = newComp
+			if component then
+				local Components = self.object.Components
+				local compModule = require(self.classComponentsFolder:FindFirstChild(component))
+				local newComp = compModule.new(self.object, self.player)
+				newComp:Init()
+	
+				Components[newComp.name] = newComp
+			else
+				self.logManagerOBJ:AddLog("Component: ", component," doesn't exist, ClassManager DEBUG.")	
+			end
 		end
 	end
 	
 	if specificComponent then
 		for _, component in specificComponent do
-			local Components = self.object.Components
+			if component then
+				local Components = self.object.Components
 
 			local compModule = require(self.classComponentsFolder:FindFirstChild(component))
 			local newComp = compModule.new(self.object, self.player)
@@ -61,6 +66,9 @@ function classManager:LoadComponents(specificComponent) -- Load a component clas
 
 			Components[newComp.name] = {}
 			Components[newComp.name] = newComp
+			else
+				self.logManagerOBJ:AddLog("Component: ", component," doesn't exist, ClassManager DEBUG.")
+			end	
 		end
 	end
 end
@@ -77,7 +85,12 @@ end
 function classManager:AddSpecificComponent(instance, component, componentArray)
 	if not componentArray then			-- Add any specific component, or on specific array, to the instance.
 		local actualComponent = self.componentFolder:FindFirstChild(component)
-		self:CreateComponent(instance, actualComponent)
+		if actualComponent then
+			self:CreateComponent(instance, actualComponent)
+		else
+			self.logManagerOBJ:AddLog("Component: " .. tostring(component) .. " doesn't exist, ClassManager DEBUG.")	
+			self.logManagerOBJ:ShowLogs()
+		end
 		return
 	end
 	

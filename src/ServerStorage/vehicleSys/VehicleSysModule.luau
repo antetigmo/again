@@ -1,18 +1,19 @@
+local CollectionService = game:GetService("CollectionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage= game:GetService("ServerStorage")
 local PlayersService = game:GetService("Players")
-local CollectionService = game:GetService("CollectionService")
------------------
+
 local classManager = require(ServerStorage.Components.ClassManager)
 
-local componentFolder = ServerStorage.vehicleSys.Components
+local componentFolder = ServerStorage.VehicleSys.Components
 local componentsArray = {}
 
 local vehicleSys = {}
-vehicleSys.__index = vehicleSys
-vehicleSys.instanceNumber = 0
 
+vehicleSys.__index = vehicleSys
 local modVersion = "0.0.0"
+
+vehicleSys.instanceNumber = 0
 
 function vehicleSys.new(player)
 	vehicleSys.instanceNumber += 1 

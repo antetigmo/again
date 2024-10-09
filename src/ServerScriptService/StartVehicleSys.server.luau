@@ -28,10 +28,10 @@ end)
 local ServerInstance = require(ServerStorage.Components.ServerInstance)
 local ClassManager = require(ServerStorage.Components.ClassManager)
 
-local serverInstanceOBJ = ServerInstance.new("serverInstance")
+local serverInstanceOBJ = ServerInstance.new("VehicleSysServer")
 serverInstanceOBJ:Init()
 
-local serverClassManager = ClassManager.new(serverInstanceOBJ, "ServerClassManager", ServerStorage.vehicleSys.Components, nil)
+local serverClassManager = ClassManager.new(serverInstanceOBJ, "ServerClassManager", ServerStorage.VehicleSys.Components, nil)
 serverClassManager:Init()
 
 serverInstanceOBJ["mainsReferences"] = mainsReferences
