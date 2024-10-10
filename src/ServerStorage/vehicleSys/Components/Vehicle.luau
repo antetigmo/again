@@ -35,7 +35,7 @@ function vehicle:Init()
 	-------------------------------------------
 
 	classManagerOBJ:AddSpecificComponent(self.car, nil, vehicle.componentsArray)	-- WARN
-	classManagerOBJ:AddSpecificComponent(self.car.Seat, "Button", nil)
+	classManagerOBJ:AddSpecificComponent(self.car.Seat, nil, nil, {"Button"})
 	--self.Button = self.Components.Button[self.instanceID] -- Find a better way to index instead of self.instanceID.
 	
 

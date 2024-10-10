@@ -25,7 +25,7 @@ end
 
 function button:Init()
     --CUSTOMS SERVICES
-	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
+	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.VehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
 
@@ -33,9 +33,6 @@ function button:Init()
     self:AddressEvents()
 
     self.Components.LogManager:AddLog("Button initiated for class: " .. tostring(self.object.name))
-    self.Components.LogManager:AddLog("Teste lindo!")
-    self.Components.LogManager:AddLog("Olha o teste legal!")
-
     self.InitStatus = true
 end
 
@@ -54,7 +51,7 @@ function button:CreatePrompt(instance)
     prompt.HoldDuration = 1
     prompt.Parent = instance
     --
-    self.Prompt = prompt
+    self.prompt = prompt
 
     self.Components.LogManager:AddLog("Created a ProximityPrompt for instance: " .. tostring(instance))
 

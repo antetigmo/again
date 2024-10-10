@@ -20,10 +20,9 @@ function classManager.new(object, player, componentFolder, componentArray)
 	self.object.Components = {}
 	self.object.Components[self.name] = self
 	
-	self.componentFolder = componentFolder	-- Folder where the components are.
-	self.classComponentsFolder = ServerStorage.Components -- Folder where the main components are.
-
-	self.componentsArray = componentArray
+	self.componentFolder = componentFolder	-- Folder where the class components are.
+	self.componentsArray = componentArray -- An array to the created class spawn with components.
+	self.gComponents = ServerStorage.GComponents
 	
 	return self
 end
@@ -31,7 +30,7 @@ end
 function classManager:Init()
 	self:LoadComponents({"EventManager", "LogManager"})
 
-	local LogManager = require(self.classComponentsFolder.LogManager)
+	local LogManager = require(ServerStorage.Components.LogManager)
 	self.logManagerOBJ = LogManager.new(self, self.name)
 	self.logManagerOBJ:Init()
 	
@@ -44,13 +43,13 @@ function classManager:LoadComponents(specificComponent) -- Load a component clas
 		for _, component in self.componentsArray do
 			if component then
 				local Components = self.object.Components
-				local compModule = require(self.classComponentsFolder:FindFirstChild(component))
+				local compModule = require(ServerStorage.Components:FindFirstChild(component))
 				local newComp = compModule.new(self.object, self.player)
 				newComp:Init()
 	
 				Components[newComp.name] = newComp
 			else
-				self.logManagerOBJ:AddLog("Component: ", component," doesn't exist, ClassManager DEBUG.")	
+				self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")	
 			end
 		end
 	end
@@ -60,14 +59,14 @@ function classManager:LoadComponents(specificComponent) -- Load a component clas
 			if component then
 				local Components = self.object.Components
 
-			local compModule = require(self.classComponentsFolder:FindFirstChild(component))
-			local newComp = compModule.new(self.object, self.player)
-			newComp:Init()
+				local compModule = require(ServerStorage.Components:FindFirstChild(component))
+				local newComp = compModule.new(self.object, self.player)
+				newComp:Init()
 
-			Components[newComp.name] = {}
-			Components[newComp.name] = newComp
+				Components[newComp.name] = {}
+				Components[newComp.name] = newComp
 			else
-				self.logManagerOBJ:AddLog("Component: ", component," doesn't exist, ClassManager DEBUG.")
+				self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")
 			end	
 		end
 	end
@@ -78,26 +77,44 @@ function classManager:AddComponents(instance)    -- Add all components, that the
 		local component = self.componentFolder:FindFirstChild(tag)
 		if component then
 			self:CreateComponent(instance, component)
+		else
+			self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")	
 		end
 	end	
 end
 
-function classManager:AddSpecificComponent(instance, component, componentArray)
-	if not componentArray then			-- Add any specific component, or on specific array, to the instance.
+
+-- AddSpecificComponet adds any specific component, a specific array, or a globalComponent to the instance.
+-- WARN, componentArray, and gComponents must be an array.
+
+function classManager:AddSpecificComponent(instance, component, componentArray, gComponents)
+	if component then
 		local actualComponent = self.componentFolder:FindFirstChild(component)
 		if actualComponent then
 			self:CreateComponent(instance, actualComponent)
 		else
-			self.logManagerOBJ:AddLog("Component: " .. tostring(component) .. " doesn't exist, ClassManager DEBUG.")	
-			self.logManagerOBJ:ShowLogs()
+			self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")
 		end
 		return
 	end
-	
-	for _, tag in componentArray do
-		local component = self.componentFolder:FindFirstChild(tag)
-		if component then
-			self:CreateComponent(instance, component)
+	if componentArray then
+		for _, tag in componentArray do
+			local component = self.componentFolder:FindFirstChild(tag)
+			if component then
+				self:CreateComponent(instance, component)
+			else
+				self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")	
+			end
+		end
+	end
+	if gComponents then
+		for _, component in gComponents do
+			local component = self.gComponents:FindFirstChild(component)
+			if component then
+				self:CreateComponent(instance, component)
+			else
+				self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")	
+			end
 		end
 	end
 end
