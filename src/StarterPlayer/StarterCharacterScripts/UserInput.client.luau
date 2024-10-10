@@ -12,12 +12,26 @@ end)
 
 UserInputService.InputBegan:Connect(function(input)
 	if input.KeyCode == Enum.KeyCode.A then
-		vehicleSystemEvents.Keyboard:FireServer(input.KeyCode, "Pressed")
+		vehicleSystemEvents.Keyboard:Fire(input.KeyCode, "Pressed")
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.A then
+		vehicleSystemEvents.Keyboard:Fire(input.KeyCode, "Released")
+	end
+end)
+
+
+UserInputService.InputBegan:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.D then
+		vehicleSystemEvents.Keyboard:Fire(input.KeyCode, "Pressed")
 	end
 end)
 
 UserInputService.InputEnded:Connect(function(input)
 	if input.KeyCode == Enum.KeyCode.D then
-		vehicleSystemEvents.Keyboard:FireServer(input.KeyCode, "Released")
+		vehicleSystemEvents.Keyboard:Fire(input.KeyCode, "Released")
 	end
 end)
+

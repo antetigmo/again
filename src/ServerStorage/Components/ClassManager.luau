@@ -95,7 +95,6 @@ function classManager:AddSpecificComponent(instance, component, componentArray, 
 		else
 			self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")
 		end
-		return
 	end
 	if componentArray then
 		for _, tag in componentArray do

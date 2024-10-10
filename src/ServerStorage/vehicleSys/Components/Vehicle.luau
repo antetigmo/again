@@ -8,7 +8,7 @@ local vehicle = {}
 vehicle.__index = vehicle
 vehicle.instanceNumber = 0
 
-vehicle.componentsArray = {"Engine", "Chassi", "Direction", "Suspension", "EnterVehicle"}
+vehicle.componentsArray = {"Engine","EnterVehicle", "Chassi", "Direction", "Suspension"}
 vehicle.classComponents = {"EventManager"}
 
 function vehicle.new(object, player, ...)
@@ -48,7 +48,6 @@ function vehicle:AddressEvents()
 	self.Pressed = self.Button:GetPrompt().Triggered:Connect(function(playerWhoTriggered) -- WARN
         self.Components.LogManager:AddLog("Prompt triggered." .. tostring(self))
 
-        local serverInstance = self:GetServerInstance()
         self.Components.EnterVehicle[self.instanceID]:Enter(playerWhoTriggered) -- Find a better way to index instead of self.instanceID.
     end)
 end
@@ -58,4 +57,11 @@ function vehicle:GetServerInstance() -- Gets the ServerInstance table by looking
 	return serverInstance
 end
 
+function vehicle:GetEnterVehicle()
+	local enterVehicle
+	for i, v in self.Components.EnterVehicle do
+		enterVehicle = v
+	end
+	return enterVehicle
+end
 return vehicle

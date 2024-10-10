@@ -41,7 +41,7 @@ function EnterVehicle:Init()
 end
 
 function EnterVehicle:AddressEvents()
-	self.EnteredVehicle = self.Components.EventManager:ConnectEvent("Entered", function(player)
+	self.Entered = self.Components.EventManager:ConnectEvent("Entered", function(player)
 		local playerEventManager = self.ServerInstance.mainsReferences[player.Name].Components.EventManager
 		playerEventManager:PublishTopic("Entered")
 	end)

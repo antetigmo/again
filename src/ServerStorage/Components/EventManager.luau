@@ -34,7 +34,7 @@ function eventManager:ConnectEvent(eventName, callback)
 		objectOnArray("args")
 
 		self.args[self.object.name][eventName] = {player, ...}
-		print(self.args)
+		--print(self.args)
 
 		callback(unpack(self.args[self.object.name][eventName]))
 		warn(eventName, "event, arrived at eventManager")
@@ -68,7 +68,7 @@ end
 
 function eventManager:PublishTopic(topicName, player, ...)
 	self._topicEvent:Fire(topicName, player, ...)	
-	print("Published topic: " .. topicName)
+	print("Published topic: " .. topicName .. "---for object:", self.object.name, self.object)
 end
 
 function eventManager:SubscribeTopic(topicName, callBack)
