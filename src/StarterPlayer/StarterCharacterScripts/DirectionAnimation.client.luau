@@ -33,9 +33,7 @@ vehicleSystemEvents.Entered.OnClientEvent:Connect(function(car)
     DEFAULT_CFRAME_RIGHT = rightWheel.CFrame
 
     vehicleSystemEvents.Keyboard.Event:Connect(function(input, status)
-        print("chegou no directionAnimation")
         if input == Enum.KeyCode.A or input == Enum.KeyCode.D then
-            print("entrou no if")
             directionAnimation.CalculateDirection(input, status)
         end
     end)

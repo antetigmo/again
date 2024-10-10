@@ -35,13 +35,17 @@ function direction:Init()
 end
 
 function direction:AddressEvents()
-    local enterVehicleEventManager = self.object:GetEnterVehicle().Components.EventManager	
-	local serverInstance = self.object:GetServerInstance()
+    local vehicleEventManager = self.object.Components.EventManager	
 
-	self.EnteredVehicle = enterVehicleEventManager:ConnectEvent("Entered", function(player)
+	self.EnteredVehicle = vehicleEventManager:ConnectEvent("EnteredVehicle", function(player)
 		local directionAnimation = player.Character:FindFirstChild("DirectionAnimation")
 		directionAnimation.Enabled = true
 		ReplicatedStorage.vehicleSystemEvents.Entered:FireClient(player, self.object.car)
+	end)
+
+	self.ExitedVehicle = vehicleEventManager:ConnectEvent("ExitedVehicle", function(player)
+		local directionAnimation = player.Character:FindFirstChild("DirectionAnimation")
+		directionAnimation.Enabled = false
 	end)
 end
 

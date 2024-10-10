@@ -51,7 +51,7 @@ end
 function vehicleSys:m_AddressEvents()
 	warn("VehicleSys addressed all necessary events.")
 
-	self.EnteredEvent = self.Components.EventManager:ConnectEvent("Entered", function()
+	self.EnteredVehicle = self.Components.EventManager:ConnectEvent("Entered", function()
 		
 	end)
 
