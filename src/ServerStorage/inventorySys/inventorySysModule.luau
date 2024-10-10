@@ -9,7 +9,7 @@ local ClientToServer = inventorySystemEvents.Drop
 local ServerToClient = inventorySystemEvents.ServerToClient
 local ServerToServer = inventorySystemEvents.ServerToServer
 
-local componentFolder = ServerStorage.inventorySys.Components
+local componentFolder = ServerStorage.InventorySys.Components
 local classComponents = {"eventManager", "gui"}
 
 

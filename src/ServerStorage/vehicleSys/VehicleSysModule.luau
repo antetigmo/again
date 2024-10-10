@@ -1,11 +1,11 @@
+local CollectionService = game:GetService("CollectionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage= game:GetService("ServerStorage")
 local PlayersService = game:GetService("Players")
-local CollectionService = game:GetService("CollectionService")
------------------
+
 local classManager = require(ServerStorage.Components.ClassManager)
 
-local componentFolder = ServerStorage.vehicleSys.Components
+local componentFolder = ServerStorage.VehicleSys.Components
 local componentsArray = {}
 
 local vehicleSys = {}
@@ -20,7 +20,7 @@ function vehicleSys.new(player)
 	-- ONLY THE MAIN CLASS MUST HAVE THESE \/
 	local self = setmetatable({}, vehicleSys)
 	self.player = player 
-	self.name = "vehicleSys"..tostring(vehicleSys.instanceNumber) 
+	self.name = "VehicleSys"..tostring(vehicleSys.instanceNumber) 
 	self.instanceID = vehicleSys.instanceNumber
 	-------------------------------------------
 	
@@ -33,23 +33,28 @@ function vehicleSys:m_Init()
 	classManagerOBJ:Init()
 	-------------------------------------------
 	warn("------")
-	warn("vehicleSys initiated, current version:" , modVersion,"; instanceID:", self.instanceID,"; player:", self.player)
+	warn("VehicleSys initiated, current version:" , modVersion,"; instanceID:", self.instanceID,"; player:", self.player)
 
 	self:m_AddressEvents()
 
 	task.spawn(function()
-		task.wait(15)
+		task.wait(3)
 		self:RefreshMainsReferences()
 	end)
 
 end
 
 function vehicleSys:RefreshMainsReferences() -- Refresh the table mainsReferences, by __newindex in server(startVehicleSystem).
-	self.mainsReferences = self.mainsReferences.ServerClassManager["mainsReferences"]
+	self.mainsReferences = self.mainsReferences.serverClassManagerOBJ["mainsReferences"]
 end
 
 function vehicleSys:m_AddressEvents()
-	warn("vehicleSys addressed all necessary events.")
+	warn("VehicleSys addressed all necessary events.")
+
+	self.EnteredVehicle = self.Components.EventManager:ConnectEvent("Entered", function()
+		
+	end)
+
 end
 
 return vehicleSys

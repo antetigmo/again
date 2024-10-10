@@ -1,7 +1,7 @@
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
 ---
-local vehicleSysModule = require(ServerStorage.vehicleSys.VehicleSysModule)
+local vehicleSysModule = require(ServerStorage.VehicleSys.VehicleSysModule)
 
 local function RefreshMainReferences(table)
     for _, mainRefs in table do
@@ -25,22 +25,17 @@ Players.PlayerAdded:Connect(function(player)
     vehicleSysModuleOBJ:m_Init()
 end)
 
-local ServerInstance = require(ServerStorage.Components.ServerInstance)
-local ClassManager = require(ServerStorage.Components.ClassManager)
-
-local serverInstanceOBJ = ServerInstance.new("serverInstance")
+local serverInstanceOBJ = require(ServerStorage.Components.ServerInstance).new("VehicleSysServer")
 serverInstanceOBJ:Init()
 
-local serverClassManager = ClassManager.new(serverInstanceOBJ, "ServerClassManager", ServerStorage.vehicleSys.Components, nil)
-serverClassManager:Init()
+local serverClassManagerOBJ = require(ServerStorage.Components.ClassManager).new(serverInstanceOBJ, "serverClassManagerOBJ", ServerStorage.VehicleSys.Components, nil)
+serverClassManagerOBJ:Init()
 
 serverInstanceOBJ["mainsReferences"] = mainsReferences
 
+mainsReferences[serverClassManagerOBJ.player] = serverClassManagerOBJ
 
 
-mainsReferences[serverClassManager.player] = serverClassManager
-
-
-serverClassManager:AddComponents(game.Workspace.SomeCar)
-serverClassManager:AddComponents(game.Workspace.SomeCar2)
-serverClassManager:AddComponents(game.Workspace.TestPart)
+serverClassManagerOBJ:AddComponents(game.Workspace.SomeCar)
+serverClassManagerOBJ:AddComponents(game.Workspace.SomeCar2)
+serverClassManagerOBJ:AddComponents(game.Workspace.TestPart)

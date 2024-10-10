@@ -16,7 +16,7 @@ function button.new(object, player, instance)        --- Creates a proximity pro
 	self.player = player
 	self.name = "Button"
 	self.instanceID = button.instanceNumber
-    self.InitStatus = false
+    self.initStatus = false
 	---------------------------------------------
 
     self.actualInstance = instance
@@ -25,7 +25,7 @@ end
 
 function button:Init()
     --CUSTOMS SERVICES
-	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.vehicleSys.Components, nil)
+	local classManagerOBJ = ClassManager.new(self, self.player, ServerStorage.VehicleSys.Components, nil)
 	classManagerOBJ:Init()
 	-------------------------------------------
 
@@ -33,10 +33,7 @@ function button:Init()
     self:AddressEvents()
 
     self.Components.LogManager:AddLog("Button initiated for class: " .. tostring(self.object.name))
-    self.Components.LogManager:AddLog("Teste lindo!")
-    self.Components.LogManager:AddLog("Olha o teste legal!")
-
-    self.InitStatus = true
+    self.initStatus = true
 end
 
 function button:AddressEvents()
@@ -54,11 +51,18 @@ function button:CreatePrompt(instance)
     prompt.HoldDuration = 1
     prompt.Parent = instance
     --
-    self.Prompt = prompt
+    self.prompt = prompt
 
     self.Components.LogManager:AddLog("Created a ProximityPrompt for instance: " .. tostring(instance))
 
     return prompt
+end
+
+function button:GetPrompt()
+    if self.prompt then
+        return self.prompt
+    end
+    self.Components.LogManager:AddLog("No prompt found.")
 end
 
 return button

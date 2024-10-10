@@ -1,6 +1,6 @@
-local LogManager = {}
-LogManager.__index = LogManager
-LogManager.instanceNumber = 0
+local logManager = {}
+logManager.__index = logManager
+logManager.InstanceNumber = 0
 
 local defaultTags = {
     "ClassManager",
@@ -18,57 +18,62 @@ local defaultTags = {
     "Other"
 }
 
-function LogManager.new(object, player, ...)
-	LogManager.instanceNumber += 1
-	local self = setmetatable({}, LogManager)
+function logManager.new(object, player, ...)
+	logManager.InstanceNumber += 1
+	local self = setmetatable({}, logManager)
 	local args = {...}
 	
 	-- ALL CLASSES MUST HAVE THESE \/
 	self.object = object
 	self.player = player
 	self.name = "LogManager"
-	self.instanceID = LogManager.instanceNumber
+	self.instanceID = logManager.InstanceNumber
 	---------------------------------------------
 	
-	self.Logs = {}
-    self.ClassifiedTags = {}
+	self.logs = {}
+    self.classifiedTags = {}
 	return self
 end
 
-function LogManager:Init()
-	--warn("LogManager initiated for class:", self.object.name)
-    self:AddClassifiedTags(nil, defaultTags)
+function logManager:Init()
+    self:AddclassifiedTags(nil, defaultTags)
 
-    if self.ClassifiedTags == nil then task.wait() end
+    if self.classifiedTags == nil then task.wait() end
     self:ClassifyAllLogs()
 
-    self:AddLog("LogManager initiated for class:", self.object.name)
+    self:AddLog("LogManager initiated for class: " .. self.object.name)
 end
 
-function LogManager:AddLog(log)
-    table.insert(self.Logs, log)
+function logManager:AddLog(log)
+    table.insert(self.logs, log)
     self:ClassifyLog(log)
 end
 
-function LogManager:PrintClassifiedTags() -- Print in the console the classified logs.
-    for category, logs in self.ClassifiedTags do
-        print("Logs for category:", category)
-        for _, log in ipairs(logs) do
-            print(log)
+function logManager:ShowLogs() -- Print in the console the classified logs.
+    warn(self.object.name, "Called for ShowLogs.")
+    for category, logs in pairs(self.classifiedTags) do
+        if #logs > 0 then
+            print("Logs for category:", category)
+            local logArray = {}
+        
+            for _, log in ipairs(logs) do
+                table.insert(logArray, log)
+            end
+            print(logArray)
         end
     end
 end
 
-function LogManager:ClassifyAllLogs() -- Classify all logs inside of self.logs into self.ClassifiedTags.
-    for _, log in self.Logs do
+function logManager:ClassifyAllLogs() -- Classify all logs inside of self.logs into self.classifiedTags.
+    for _, log in self.logs do
         self:ClassifyLog(log)
     end
 end
 
-function LogManager:ClassifyLog(log) -- Classify a log inside of self.logs into self.ClassifiedTags.
+function logManager:ClassifyLog(log) -- Classify a log inside of self.logs into self.classifiedTags.
     local foundTag = false 
 
-    for _, logs in self.ClassifiedTags do    -- Check if the log is already in self.ClassifiedTags.
+    for _, logs in self.classifiedTags do    -- Check if the log is already in self.classifiedTags.
         for _, existingLog in logs do               -- If it is, then return.
             if existingLog == log then
                 return
@@ -76,35 +81,35 @@ function LogManager:ClassifyLog(log) -- Classify a log inside of self.logs into 
         end
     end
 
-    for claTag, _ in self.ClassifiedTags do    -- Check if the log has a classified tag(word) in self.ClassifiedTags.
+    for claTag, _ in self.classifiedTags do    -- Check if the log has a classified tag(word) in self.classifiedTags.
         if string.find(log, claTag) then       -- If it has then the insert and loop is broke.
-            table.insert(self.ClassifiedTags[claTag], log)
+            table.insert(self.classifiedTags[claTag], log)
             foundTag = true 
             break
         end  
     end
 
     if not foundTag then                       -- If the a claTag was not found on the log, then add it to "Other"
-        table.insert(self.ClassifiedTags["Other"], log)
+        table.insert(self.classifiedTags["Other"], log)
     end     
 end
 
-function LogManager:AddClassifiedTags(tag, arrayOfTags) -- Add tags to ClassifiedTags table.
+function logManager:AddclassifiedTags(tag, arrayOfTags) -- Add tags to classifiedTags table.
     if arrayOfTags then
         for _, tagV in arrayOfTags do
-            self.ClassifiedTags[tagV] = {}
+            self.classifiedTags[tagV] = {}
         end
         return
     end
-    self.ClassifiedTags[tag] = {} 
+    self.classifiedTags[tag] = {} 
 end
 
-function LogManager:CheckStatus(component)
+function logManager:CheckStatus(component)
     if component.InitStatus == true then
-        print("Component:", component.name, "has initialized correctly, status is:", component.InitStatus)
+        print("Component:", component.name, "has initialized correctly, status is:", component.initStatus)
     else
         print("Component:", component.name, "has failed to initialize.")
     end
 end
 
-return LogManager
+return logManager

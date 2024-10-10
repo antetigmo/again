@@ -4,13 +4,10 @@ local PlayersService = game:GetService("Players")
 local CollectionService = game:GetService("CollectionService")
 
 local classManager = {}
-
 classManager.__index = classManager
-local modVersion = "0.0.0"
-
 classManager.instanceNumber = 0
 
-function classManager.new(object, player, componentFolder, componentArray)-- object main, player, componentFolder(location of the folder), specific array.
+function classManager.new(object, player, componentFolder, componentArray)
 	classManager.instanceNumber += 1	
 	local self = setmetatable({}, classManager)
 	-- ALL CLASSES MUST HAVE THESE \/
@@ -23,19 +20,17 @@ function classManager.new(object, player, componentFolder, componentArray)-- obj
 	self.object.Components = {}
 	self.object.Components[self.name] = self
 	
-	self.componentFolder = componentFolder
-	self.classComponentsFolder = ServerStorage.Components
-	self.componentsArray = componentArray
+	self.componentFolder = componentFolder	-- Folder where the class components are.
+	self.componentsArray = componentArray -- An array to the created class spawn with components.
+	self.gComponents = ServerStorage.GComponents
 	
 	return self
 end
 
 function classManager:Init()
-	--warn("classManager initiated for class:", self.object.name)
-
 	self:LoadComponents({"EventManager", "LogManager"})
 
-	local LogManager = require(self.classComponentsFolder.LogManager)
+	local LogManager = require(ServerStorage.Components.LogManager)
 	self.logManagerOBJ = LogManager.new(self, self.name)
 	self.logManagerOBJ:Init()
 	
@@ -44,74 +39,87 @@ function classManager:Init()
 end
 
 function classManager:LoadComponents(specificComponent) -- Load a component class, speciFicComponent can be an array.
-	if self.componentsArray then -- componentsArray is an array that you specify, to load all the components in that array.
+	if self.componentsArray then -- componentsArray is an array that you specify, to load components in that array.
 		for _, component in self.componentsArray do
-
-			local Components = self.object.Components
+			if component then
+				local Components = self.object.Components
+				local compModule = require(ServerStorage.Components:FindFirstChild(component))
+				local newComp = compModule.new(self.object, self.player)
+				newComp:Init()
 	
-			local compModule = require(self.classComponentsFolder:FindFirstChild(component))
-			local newComp = compModule.new(self.object, self.player)
-			newComp:Init()
-	
-			Components[newComp.name] = {}
-			Components[newComp.name] = newComp
+				Components[newComp.name] = newComp
+			else
+				self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")	
+			end
 		end
 	end
 	
 	if specificComponent then
 		for _, component in specificComponent do
-			local Components = self.object.Components
+			if component then
+				local Components = self.object.Components
 
-			local compModule = require(self.classComponentsFolder:FindFirstChild(component))
-			local newComp = compModule.new(self.object, self.player)
-			newComp:Init()
+				local compModule = require(ServerStorage.Components:FindFirstChild(component))
+				local newComp = compModule.new(self.object, self.player)
+				newComp:Init()
 
-			Components[newComp.name] = {}
-			Components[newComp.name] = newComp
+				Components[newComp.name] = {}
+				Components[newComp.name] = newComp
+			else
+				self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")
+			end	
 		end
 	end
 end
 
-function classManager:AddAll(instanceFolder, tag) -- ADD ALL COMPONENTS TO THE DESIRED PART IF IT HAVE THE TAG.
-	local instancesArray = instanceFolder.getChildren()
-	if not instanceFolder then
-		return print("No instance folder, AddAll didn't worked.")
-	end
-	
-	for _, instance in instancesArray do
-		if CollectionService:HasTag(instance, tag) then
-			self:AddComponents(instance)
-			warn("Creating components for instance:", instance)
-		end
-	end
-end
-
-function classManager:AddComponents(instance)    -- ADD ALL COMPONENTS THAT THE INSTANCE HAS TAGGED.
+function classManager:AddComponents(instance)    -- Add all components, that the instance has tagged.
 	for _, tag in CollectionService:GetTags(instance) do
 		local component = self.componentFolder:FindFirstChild(tag)
 		if component then
 			self:CreateComponent(instance, component)
+		else
+			self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")	
 		end
 	end	
 end
 
-function classManager:AddSpecificComponent(instance, component, componentArray)
-	if not componentArray then					 -- ADD ANY SPECIFIC COMPONENT, OR AN SPECIFIC ARRAY, TO THE INSTANCE.
+
+-- AddSpecificComponet adds any specific component, a specific array, or a globalComponent to the instance.
+-- WARN, componentArray, and gComponents must be an array.
+
+function classManager:AddSpecificComponent(instance, component, componentArray, gComponents)
+	if component then
 		local actualComponent = self.componentFolder:FindFirstChild(component)
-		self:CreateComponent(instance, actualComponent)
-		return
+		if actualComponent then
+			self:CreateComponent(instance, actualComponent)
+		else
+			self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")
+		end
 	end
-	
-	for _, tag in componentArray do
-		local component = self.componentFolder:FindFirstChild(tag)
-		if component then
-			self:CreateComponent(instance, component)
+	if componentArray then
+		for _, tag in componentArray do
+			local component = self.componentFolder:FindFirstChild(tag)
+			if component then
+				self:CreateComponent(instance, component)
+			else
+				self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")	
+			end
+		end
+	end
+	if gComponents then
+		for _, component in gComponents do
+			local component = self.gComponents:FindFirstChild(component)
+			if component then
+				self:CreateComponent(instance, component)
+			else
+				self.logManagerOBJ:AddLog("Component: "..tostring(component).." doesn't exist, ClassManager DEBUG.")	
+			end
 		end
 	end
 end
 
-function classManager:CreateComponent(instance, componentScript, ...) -- CREATE AND INIT A COMPONENT
-	local compModule = require(componentScript)						  -- ALSO ADDRESS IN OBJ ARRAY
+function classManager:CreateComponent(instance, componentScript, ...) -- Create and init a component.
+	local compModule = require(componentScript)						  -- Also address it on the component/object.
 	local newComp = compModule.new(self.object, self.player, instance)
 
 	if self.object.Components[newComp.name] then
@@ -124,7 +132,6 @@ function classManager:CreateComponent(instance, componentScript, ...) -- CREATE 
 	newComp:Init()
 	
 	self.logManagerOBJ:AddLog("Component " .. newComp.name ..  " created for instance: " .. tostring(instance))
-	--warn("Component", newComp.name, "created for instance:",instance)
 end
 
 function classManager:GetComponent(componentsArray, name, instanceID)

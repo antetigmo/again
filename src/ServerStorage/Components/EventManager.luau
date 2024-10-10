@@ -20,31 +20,29 @@ function eventManager.new(object, player)
 end
 
 function eventManager:Init()
-	--warn("eventManager initiated for class:", self.object.name)
+	--print("eventManager initiated for class:", self.object.name)
 end
 
 function eventManager:ConnectEvent(eventName, callback)
-	local function ObjectOnArray(array)
+	local function objectOnArray(array)
 		if not self[array][self.object.name] then
 			self[array][self.object.name] = {}
 		end
 	end
 	
 	local eventSubscription = self:SubscribeTopic(eventName, function(player, ...)
-		if player == self.object.player then
-			ObjectOnArray("args")
+		objectOnArray("args")
 
-			self.args[self.object.name][eventName] = {player, ...}
-			print(self.args)
+		self.args[self.object.name][eventName] = {player, ...}
+		--print(self.args)
 
-			callback(unpack(self.args[self.object.name][eventName]))
-			warn(eventName, "event, arrived at eventManager")
-		end
+		callback(unpack(self.args[self.object.name][eventName]))
+		warn(eventName, "event, arrived at eventManager")
 	end)
 
-	ObjectOnArray("events")
+	objectOnArray("events")
 	self.events[self.object.name][eventName] = eventSubscription
-	print(self.events)
+	--print(self.events)
 	
 	return eventSubscription
 end
@@ -52,6 +50,7 @@ end
 function eventManager:DisconnectEvent(eventName)
 	warn("--- Disconnection incoming ---")
 	self.events[self.object.name][eventName]:Disconnect()
+	self.events[self.object.name][eventName] = nil
 
 	local objName = self.object.name
 	warn("2 - ",eventName, "Disconnected.", eventName, "connected status is:", self.events[objName][eventName].Connected)
@@ -63,13 +62,13 @@ function eventManager:ResetEvent(eventName)
 	self:ConnectEvent(eventName)
 end
 
---function eventManager:DisconnectAll()
+--function eventManager:DisconnectAll() -- Disconnect all events
 
 --end
 
 function eventManager:PublishTopic(topicName, player, ...)
 	self._topicEvent:Fire(topicName, player, ...)	
-	print("Published topic: " .. topicName)
+	print("Published topic: " .. topicName .. "---for object:", self.object.name, self.object)
 end
 
 function eventManager:SubscribeTopic(topicName, callBack)
