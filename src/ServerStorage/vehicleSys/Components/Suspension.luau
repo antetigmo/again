@@ -19,9 +19,10 @@ function suspension.new(object, player, ...)
 	self.player = player
 	self.name = "Suspension"
 	self.instanceID = suspension.instanceNumber
+	self.initStatus = false
 	---------------------------------------------
 	
-	self.Car = args[1] 
+	self.car = args[1] 
 	
 	return self
 end
@@ -41,7 +42,7 @@ function suspension:Init()
 		while true do
 			local delta = RunService.Heartbeat:Wait()
 
-			local chassi = self.Car.Chassi 
+			local chassi = self.car.Chassi 
 			local weight = chassi.AssemblyMass * workspace.Gravity
 
 			--chassi:ApplyImpulse(Vector3.new(0, (weight * delta)*1.02, 0)) 
@@ -74,7 +75,7 @@ function suspension:CreateAllViewers()
 	self.AllWheels = {}
 	
 	--- ADDRESS ALL VEHICLE WHEELS TO THE ALLWHEELS ARRAY
-	local supensionFolder = self.Car.Suspension:GetChildren()
+	local supensionFolder = self.car.Suspension:GetChildren()
 	for i, v in supensionFolder do
 		table.insert(self.AllWheels, v)
 		self:CreateCylinderViewer(v.Position)

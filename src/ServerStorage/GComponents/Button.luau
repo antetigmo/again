@@ -16,7 +16,7 @@ function button.new(object, player, instance)        --- Creates a proximity pro
 	self.player = player
 	self.name = "Button"
 	self.instanceID = button.instanceNumber
-    self.InitStatus = false
+    self.initStatus = false
 	---------------------------------------------
 
     self.actualInstance = instance
@@ -33,7 +33,7 @@ function button:Init()
     self:AddressEvents()
 
     self.Components.LogManager:AddLog("Button initiated for class: " .. tostring(self.object.name))
-    self.InitStatus = true
+    self.initStatus = true
 end
 
 function button:AddressEvents()
@@ -56,6 +56,13 @@ function button:CreatePrompt(instance)
     self.Components.LogManager:AddLog("Created a ProximityPrompt for instance: " .. tostring(instance))
 
     return prompt
+end
+
+function button:GetPrompt()
+    if self.prompt then
+        return self.prompt
+    end
+    self.Components.LogManager:AddLog("No prompt found.")
 end
 
 return button

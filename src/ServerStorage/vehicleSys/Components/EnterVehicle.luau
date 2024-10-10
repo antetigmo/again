@@ -19,6 +19,7 @@ function EnterVehicle.new(object, player, ...)
 	self.player = player
 	self.name = "EnterVehicle"
 	self.instanceID = EnterVehicle.instanceNumber
+	self.initStatus = false
 	---------------------------------------------
     self.VehicleEventManager = self.object.Components.eventManager
 	self.ServerInstance = self.object:GetServerInstance()

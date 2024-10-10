@@ -106,7 +106,7 @@ end
 
 function logManager:CheckStatus(component)
     if component.InitStatus == true then
-        print("Component:", component.name, "has initialized correctly, status is:", component.InitStatus)
+        print("Component:", component.name, "has initialized correctly, status is:", component.initStatus)
     else
         print("Component:", component.name, "has failed to initialize.")
     end
