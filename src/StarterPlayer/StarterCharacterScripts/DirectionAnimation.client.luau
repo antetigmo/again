@@ -27,6 +27,7 @@ local angle = 0
 local isPressed = false
 
 vehicleSystemEvents.Entered.OnClientEvent:Connect(function(car)
+    --print("received")
     leftWheel = car.Suspension.wheelL
     rightWheel = car.Suspension.wheelR
     DEFAULT_CFRAME_LEFT = leftWheel.CFrame
@@ -52,6 +53,8 @@ function directionAnimation.Left()
             rightWheel.CFrame = rightCFrame
         end
     end
+
+    ReplicatedStorage.vehicleSystemEvents.Debug:FireServer(lAngle, angle, "Left")
 end
 
 function directionAnimation.Right()
@@ -67,6 +70,8 @@ function directionAnimation.Right()
             leftWheel.CFrame = leftCFrame
         end
     end
+
+    ReplicatedStorage.vehicleSystemEvents.Debug:FireServer(rAngle, angle, "Right")
 end
 
 function directionAnimation.CalculateDirection(input, status)

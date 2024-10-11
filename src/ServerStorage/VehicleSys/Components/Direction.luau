@@ -18,8 +18,11 @@ function direction.new(object, player, instance)
 	self.instanceID = direction.instanceNumber
     self.initStatus = false
 	---------------------------------------------
+	-- Angles
+	self.lAngle = nil
+	self.rAngle = nil
+	self.angle = nil
 
-    self.actualInstance = instance
 	return self
 end
 
@@ -40,12 +43,26 @@ function direction:AddressEvents()
 	self.EnteredVehicle = vehicleEventManager:ConnectEvent("EnteredVehicle", function(player)
 		local directionAnimation = player.Character:FindFirstChild("DirectionAnimation")
 		directionAnimation.Enabled = true
+		task.wait(0.1) 	-- FIX THIS!
 		ReplicatedStorage.vehicleSystemEvents.Entered:FireClient(player, self.object.car)
+		--print("sended")
 	end)
 
 	self.ExitedVehicle = vehicleEventManager:ConnectEvent("ExitedVehicle", function(player)
 		local directionAnimation = player.Character:FindFirstChild("DirectionAnimation")
 		directionAnimation.Enabled = false
+	end)
+
+	self.Debug = ReplicatedStorage.vehicleSystemEvents.Debug.OnServerEvent:Connect(function(player, lrAngle, angle, direction)
+		if direction == "Left" then
+			self.lAngle = lrAngle
+			ReplicatedStorage.vehicleSystemEvents.Debug:FireClient(player, player, lrAngle, angle)
+			--print(self.lAngle)
+		elseif direction == "Right" then
+			self.rAngle = lrAngle
+			ReplicatedStorage.vehicleSystemEvents.Debug:FireClient(player, player, lrAngle, angle)
+			--print(self.rAngle)
+		end
 	end)
 end
 

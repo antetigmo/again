@@ -68,6 +68,7 @@ function vehicle:AddressEvents()
 end
 
 function vehicle:EnterVehicle(player)
+	self.Components.EventManager:PublishTopic("EnteredVehicle", player)
 	self.currentPlayer = player
 	self:GetSeat():Sit(player.Character:FindFirstChildWhichIsA("Humanoid"))
 
@@ -76,8 +77,6 @@ function vehicle:EnterVehicle(player)
 			part.Transparency = 1
 		end
 	end
-
-	self.Components.EventManager:PublishTopic("EnteredVehicle", player)
 end
 
 function vehicle:ExitVehicle(player)
