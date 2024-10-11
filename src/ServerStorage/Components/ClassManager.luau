@@ -33,7 +33,6 @@ function classManager:Init()
 	local LogManager = require(ServerStorage.Components.LogManager)
 	self.logManagerOBJ = LogManager.new(self, self.name)
 	self.logManagerOBJ:Init()
-	
 	self.logManagerOBJ:AddLog("ClassManager initiated for class: " .. self.object.name)
 
 end
@@ -84,7 +83,7 @@ function classManager:AddComponents(instance)    -- Add all components, that the
 end
 
 
--- AddSpecificComponet adds any specific component, a specific array, or a globalComponent to the instance.
+-- AddSpecificComponet adds any specific component, a specific array, or a globalComponent a instance.
 -- WARN, componentArray, and gComponents must be an array.
 
 function classManager:AddSpecificComponent(instance, component, componentArray, gComponents)
