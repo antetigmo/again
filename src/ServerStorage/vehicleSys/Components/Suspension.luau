@@ -67,6 +67,7 @@ function suspension:CreateCylinderViewer(origin)
 
 	--- CYLINDER PART
 	local cylinder = game.Workspace.Laser:Clone()
+	cylinder.CanCollide = false
 	cylinder.Position = rayOrigin
 	cylinder.Parent = workspace
 end
